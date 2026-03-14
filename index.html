@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RC auta Raškovice</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            color: #333;
+        }
+        /* Horní menu jako ve Vizovicích */
+        header {
+            background-color: #0d1b3e; /* Tmavě modrá barva */
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+        }
+        nav {
+            background-color: #f4f4f4;
+            padding: 10px;
+            text-align: center;
+            border-bottom: 1px solid #ddd;
+        }
+        nav a {
+            margin: 0 15px;
+            text-decoration: none;
+            color: #0d1b3e;
+            font-weight: bold;
+        }
+        .container {
+            max-width: 900px;
+            margin: 20px auto;
+            padding: 0 20px;
+        }
+        .banner {
+            background-color: #f9f9f9;
+            padding: 20px;
+            border-radius: 5px;
+            border-left: 5px solid #0d1b3e;
+            margin-bottom: 30px;
+        }
+        h1 { margin: 0; font-size: 2.5em; }
+        h2 { border-bottom: 2px solid #eee; padding-bottom: 10px; color: #0d1b3e; }
+
+        /* Tabulka výsledků */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+        }
+        th {
+            background-color: #0d1b3e;
+            color: white;
+        }
+        tr:nth-child(even) { background-color: #f2f2f2; }
+        
+        .footer {
+            text-align: center;
+            padding: 20px;
+            font-size: 0.8em;
+            color: #777;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>RC auta Raškovice</h1>
+</header>
+
+<nav>
+    <a href="#">Domů</a>
+    <a href="#zavody">Závody</a>
+    <a href="#vysledky">Výsledky</a>
+    <a href="#">Kontakty</a>
+</nav>
+
+<div class="container">
+    
+    <div class="banner">
+        <h3>Příští závod v Raškovicích:</h3>
+        <p><strong>28.03.2026</strong> - Parkoviště / Hala Raškovice</p>
+        <p>Startovné: 50 Kč (na baterky do časomíry)</p>
+    </div>
+
+    <h2 id="vysledky">Poslední výsledky (Měřeno iPhonem)</h2>
+    <p>Aktualizováno: Právě teď</p>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Pořadí</th>
+                <th>Jezdec</th>
+                <th>Nejlepší kolo</th>
+                <th>Počet kol</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>1.</td>
+                <td>Pepa (Tamiya)</td>
+                <td>12.452 s</td>
+                <td>25</td>
+            </tr>
+            <tr>
+                <td>2.</td>
+                <td>Kámoš 1 (Xray)</td>
+                <td>13.102 s</td>
+                <td>23</td>
+            </tr>
+            <tr>
+                <td>3.</td>
+                <td>Kámoš 2 (Kyosho)</td>
+                <td>14.550 s</td>
+                <td>20</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2 id="zavody">Informace</h2>
+    <p>Závody pořádáme pro radost. Měříme pomocí iPhone aplikace a časy nahráváme sem na web. Pokud se chceš přidat, doraž s autem!</p>
+
+</div>
+
+<div class="footer">
+    &copy; 2026 RC auta Raškovice | Vytvořeno pro komunitu
+</div>
+
+</body>
+</html>
