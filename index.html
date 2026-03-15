@@ -2,101 +2,343 @@
 <html lang="cs">
 <head>
     <meta charset="UTF-8">
-    <title>ZRU Raškovice - Evidence</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZRU - Oficiální Portál</title>
     <style>
-        body { font-family: sans-serif; background: #1a1a1a; color: white; text-align: center; }
-        .container { max-width: 800px; margin: auto; padding: 20px; }
-        table { width: 100%; border-collapse: collapse; margin-top: 20px; background: #2a2a2a; }
-        th, td { border: 1px solid #444; padding: 12px; }
-        th { background: #333; color: #ff9800; }
-        .buggy { color: #00e5ff; }
-        .truggy { color: #ff4081; }
-        input, select, button { padding: 10px; margin: 5px; border-radius: 5px; border: none; }
-        button { background: #ff9800; color: white; cursor: pointer; font-weight: bold; }
-        button:hover { background: #e68a00; }
-        .galerie img { width: 100%; border-radius: 10px; margin-bottom: 10px; border: 2px solid #ff9800; }
+        /* --- HLAVNÍ GRAFIKA A FONT --- */
+        :root {
+            --primary: #00ff00; /* Svítivě zelená */
+            --bg-dark: #121212; /* Téměř černá */
+            --bg-card: #1e1e1e; /* Tmavě šedá pro karty */
+            --text: #e0e0e0;
+            --fake-silver: #a0a0a0; /* Fake šedá pro Truggy */
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text);
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* --- NAVIGACE / TLAČÍTKA --- */
+        .tab-container {
+            display: flex;
+            background-color: #000;
+            width: 100%;
+            justify-content: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 2px solid var(--primary);
+            box-shadow: 0 4px 10px rgba(0, 255, 0, 0.2);
+        }
+
+        .tab-button {
+            background: none;
+            border: none;
+            color: white;
+            padding: 20px 30px;
+            cursor: pointer;
+            font-size: 1.1em;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: 0.3s;
+        }
+
+        .tab-button:hover {
+            color: var(--primary);
+            background-color: rgba(0, 255, 0, 0.1);
+        }
+
+        .tab-button.active {
+            color: var(--primary);
+            border-bottom: 4px solid var(--primary);
+        }
+
+        /* --- OBSAH (SKRÝVÁNÍ SEKČÍ) --- */
+        .tab-content {
+            display: none;
+            width: 90%;
+            max-width: 1200px;
+            margin-top: 30px;
+            animation: fadeIn 0.5s;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* --- GRAFIKA KARET A ELEMENTŮ --- */
+        .card {
+            background-color: var(--bg-card);
+            border-radius: 12px;
+            padding: 25px;
+            border: 1px solid #333;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.5);
+            margin-bottom: 30px;
+        }
+
+        h1 { color: white; text-align: center; text-transform: uppercase; letter-spacing: 2px; }
+        h2 { color: var(--primary); text-transform: uppercase; border-bottom: 1px solid #444; padding-bottom: 10px; }
+        
+        /* Formuář */
+        .form-group { margin-bottom: 15px; }
+        input, select {
+            width: 100%; padding: 12px; background: #333; border: 1px solid #444;
+            color: white; border-radius: 6px; box-sizing: border-box;
+        }
+        button.main-btn {
+            width: 100%; padding: 15px; background-color: var(--primary); border: none;
+            color: black; font-weight: bold; font-size: 1.2em; text-transform: uppercase;
+            border-radius: 6px; cursor: pointer; transition: 0.3s;
+        }
+        button.main-btn:hover { background-color: white; transform: translateY(-2px); }
+
+        /* Tabulky */
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        th, td { text-align: left; padding: 15px; border-bottom: 1px solid #333; }
+        th { background: #222; color: var(--primary); text-transform: uppercase; font-size: 0.9em; }
+
+        /* Pavouk / Schéma */
+        .bracket {
+            display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px;
+            margin-top: 20px;
+        }
+        .group-card {
+            background: rgba(255, 255, 255, 0.05); border: 1px solid #444;
+            border-radius: 8px; padding: 15px;
+        }
+        .group-card h3 { color: var(--primary); margin-top: 0; text-align: center; font-size: 1em; }
+        .slot { background: #333; padding: 10px; margin: 5px 0; border-radius: 4px; font-size: 0.9em; border-left: 4px solid var(--primary); }
+        .buggy { border-left-color: var(--primary); color: white; }
+        .truggy { border-left-color: var(--fake-silver); color: white; }
+
+        /* Galerie */
+        .gallery {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px; margin-top: 20px;
+        }
+        .gallery-item {
+            overflow: hidden; border-radius: 8px; border: 2px solid #333;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3); transition: 0.3s;
+        }
+        .gallery-item:hover { transform: scale(1.03); border-color: var(--primary); }
+        .gallery img {
+            width: 100%; height: 220px; object-fit: cover; display: block;
+        }
+
+        /* FAQ */
+        .faq-item { margin-bottom: 15px; border-bottom: 1px solid #333; padding-bottom: 15px; }
+        .faq-item b { color: var(--primary); display: block; margin-bottom: 5px; }
+
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>🏎️ ZRU Raškovice - Registrace</h1>
-        
-        <div class="galerie">
-            <img src="foto1.jpg" alt="RC Auto">
-        </div>
 
-        <div style="background: #333; padding: 20px; border-radius: 10px;">
-            <input type="text" id="jmeno" placeholder="Jméno a příjmení">
-            <select id="auto">
-                <option value="BUGGY">BUGGY</option>
-                <option value="TRUGGY">TRUGGY</option>
-            </select>
-            <button onclick="pridatJezdce()">Registrovat na závod</button>
-        </div>
-
-        <table>
-            <thead>
-                <tr>
-                    <th>Pořadí</th>
-                    <th>Jezdec</th>
-                    <th>Kategorie</th>
-                </tr>
-            </thead>
-            <tbody id="seznam">
-                </tbody>
-        </table>
-        
-        <button onclick="vymazatVse()" style="margin-top: 30px; background: #ff4444;">Smazat celou listinu</button>
+    <div style="width: 100%; padding: 40px 0; background: linear-gradient(180deg, #000 0%, var(--bg-dark) 100%); border-bottom: 1px solid #333;">
+        <h1>ZÁVOD RAŠKOVICKÉ ULICE (ZRU)</h1>
+        <p style="text-align: center; color: #aaa;">Oficiální portál pro registraci a výsledky</p>
     </div>
 
+    <div class="tab-container">
+        <button class="tab-button active" onclick="openTab(event, 'registrace')">Registrace</button>
+        <button class="tab-button" onclick="openTab(event, 'pavouk')">Pavouk & Skupiny</button>
+        <button class="tab-button" onclick="openTab(event, 'vysledky')">Celkové Výsledky</button>
+        <button class="tab-button" onclick="openTab(event, 'faq')">FAQ / Info</button>
+    </div>
+
+    <div id="registrace" class="tab-content active">
+        <div class="card">
+            <h2>🚀 Přihláška na ZRU 1</h2>
+            <p>Trať je ready! Vyplň údaje a vidíme se na startu.</p>
+            <div class="form-group">
+                <input type="text" id="reg-jmeno" placeholder="Tvoje Jméno">
+            </div>
+            <div class="form-group">
+                <input type="text" id="reg-prijmeni" placeholder="Tvoje Příjmení">
+            </div>
+            <div class="form-group">
+                <select id="reg-auto">
+                    <option value="BUGGY">BUGGY (Světle Zelená)</option>
+                    <option value="TRUGGY">TRUGGY (Fake Šedá)</option>
+                </select>
+            </div>
+            <button class="main-btn" onclick="registrovatJezdce()">ODESLAT PŘIHLÁŠKU</button>
+        </div>
+
+        <div class="card">
+            <h3>Čerstvé fotky z dostavěné tratě</h3>
+            <div class="gallery">
+                <div class="gallery-item"><img src="foto1.jpg" alt="Pohled na trať"></div>
+                <div class="gallery-item"><img src="foto2.jpg" alt="RC auto na trati"></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="pavouk" class="tab-content">
+        <div class="card">
+            <h2>🎮 Aktuální nasazení do závodu</h2>
+            <p>Jezdci se řadí automaticky po pěti do kvalifikačních skupin.</p>
+            
+            <div class="bracket">
+                <div class="group-card">
+                    <h3>KVALIFIKACE 1</h3>
+                    <div id="p-q1"></div>
+                </div>
+                <div class="group-card">
+                    <h3>KVALIFIKACE 2</h3>
+                    <div id="p-q2"></div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card">
+            <h3>Technika v depu</h3>
+            <div class="gallery">
+                <div class="gallery-item"><img src="foto4.jpg" alt="RC Buggy detail"></div>
+                <div class="gallery-item"><img src="foto5.jpg" alt="RC Buggy zepředu"></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="vysledky" class="tab-content">
+        <div class="card">
+            <h2>🏆 Celková "Síň Slávy" (Najetá kola)</h2>
+            <table>
+                <thead>
+                    <tr><th>#</th><th>Jezdec</th><th>Auto (Typ)</th><th>Celkem Kol</th></tr>
+                </thead>
+                <tbody id="tabulka-body">
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div id="faq" class="tab-content">
+        <div class="card">
+            <h2>❓ Časté otázky a informace</h2>
+            <div class="faq-item">
+                <b>Potřebuju svoje auto?</b>
+                Ne! Máme připravené Buggy i Truggy na půjčení úplně ZADARMO pro každého.
+            </div>
+            <div class="faq-item">
+                <b>Kdo stavěl trať?</b>
+                Dostavěli jsme ji vlastníma rukama, je plně ready na první závod!
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>Jak se stavělo</h3>
+            <div class="gallery">
+                <div class="gallery-item"><img src="foto6.jpg" alt="Stavba - sekání"></div>
+                <div class="gallery-item"><img src="foto7.jpg" alt="Stavba - kmeny"></div>
+                <div class="gallery-item"><img src="foto10.jpg" alt="Stavba - příprava"></div>
+            </div>
+        </div>
+    </div>
+
+    <footer style="margin: 50px 0; color: #555; font-size: 0.9em; text-align: center;">
+        ZRU Race Control Systems © 2026 | Raškovice
+    </footer>
+
     <script>
-        // Funkce, která se spustí hned po načtení stránky
+        // --- Načítání dat při zapnutí stránky ---
         window.onload = function() {
-            nactiData();
+            nactiJezdce();
         };
 
-        function pridatJezdce() {
-            const jmeno = document.getElementById('jmeno').value;
-            const auto = document.getElementById('auto').value;
-
-            if (jmeno === "") { alert("Napiš jméno!"); return; }
-
-            const novyJezdec = { jmeno: jmeno, auto: auto };
-
-            // 1. Vezmeme stará data z paměti
-            let ulozenaData = JSON.parse(localStorage.getItem('raskovice_jezdci') || "[]");
-            
-            // 2. Přidáme nového jezdce
-            ulozenaData.push(novyJezdec);
-            
-            // 3. Uložíme zpět do paměti prohlížeče
-            localStorage.setItem('raskovice_jezdci', JSON.stringify(ulozenaData));
-
-            document.getElementById('jmeno').value = ""; // vyčistit políčko
-            nactiData(); // překreslit tabulku
-        }
-
-        function nactiData() {
-            const seznam = document.getElementById('seznam');
-            seznam.innerHTML = ""; // vymazat tabulku před překreslením
-            
-            const data = JSON.parse(localStorage.getItem('raskovice_jezdci') || "[]");
-
-            data.forEach((jezdec, index) => {
-                const radek = seznam.insertRow();
-                radek.innerHTML = `
-                    <td>${index + 1}.</td>
-                    <td>${jezdec.jmeno}</td>
-                    <td class="${jezdec.auto.toLowerCase()}">${jezdec.auto}</td>
-                `;
-            });
-        }
-
-        function vymazatVse() {
-            if (confirm("Opravdu chceš smazat všechny jezdce?")) {
-                localStorage.removeItem('raskovice_jezdci');
-                nactiData();
+        // --- Funkce pro přepínání TABS ---
+        function openTab(evt, tabName) {
+            const tabcontent = document.getElementsByClassName("tab-content");
+            for (let i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].classList.remove("active");
             }
+            const tablinks = document.getElementsByClassName("tab-button");
+            for (let i = 0; i < tablinks.length; i++) {
+                tablinks[i].classList.remove("active");
+            }
+            document.getElementById(tabName).classList.add("active");
+            evt.currentTarget.classList.add("active");
+        }
+
+        // --- Logika přihlašování s ukládáním ---
+        function registrovatJezdce() {
+            const jmeno = document.getElementById('reg-jmeno').value.trim();
+            const prijmeni = document.getElementById('reg-prijmeni').value.trim();
+            const auto = document.getElementById('reg-auto').value;
+
+            if (!jmeno || !prijmeni) {
+                alert("Prosím, vyplň jméno i příjmení!");
+                return;
+            }
+
+            const novyJezdec = {
+                celeJmeno: jmeno + " " + prijmeni,
+                auto: auto,
+                kola: 0
+            };
+
+            // Uložení do LocalStorage
+            let jezdci = JSON.parse(localStorage.getItem('zru_jezdci') || "[]");
+            jezdci.push(novyJezdec);
+            localStorage.setItem('zru_jezdci', JSON.stringify(jezdci));
+
+            // Vymazat pole
+            document.getElementById('reg-jmeno').value = "";
+            document.getElementById('reg-prijmeni').value = "";
+
+            // Překreslit web
+            nactiJezdce();
+
+            alert(`Jezdec ${novyJezdec.celeJmeno} byl úspěšně přihlášen!`);
+        }
+
+        function nactiJezdce() {
+            const jezdci = JSON.parse(localStorage.getItem('zru_jezdci') || "[]");
+            
+            const tbody = document.getElementById('tabulka-body');
+            const q1 = document.getElementById('p-q1');
+            const q2 = document.getElementById('p-q2');
+
+            // Vyčistit vše před vykreslením
+            tbody.innerHTML = "";
+            q1.innerHTML = "";
+            q2.innerHTML = "";
+
+            jezdci.forEach((jezdec, index) => {
+                const count = index + 1;
+                const classAuto = (jezdec.auto === "BUGGY") ? "buggy" : "truggy";
+
+                // 1. Do tabulky výsledků
+                const row = `<tr>
+                    <td>${count}.</td>
+                    <td style="font-weight:bold; color:white;">${jezdec.celeJmeno}</td>
+                    <td class="${classAuto}">${jezdec.auto}</td>
+                    <td style="color:var(--primary); font-weight:bold;">${jezdec.kola}</td>
+                </tr>`;
+                tbody.innerHTML += row;
+
+                // 2. Do Pavouka
+                const slot = document.createElement('div');
+                slot.className = `slot ${classAuto}`;
+                slot.innerText = `${count}. ${jezdec.celeJmeno}`;
+                
+                if (count <= 5) {
+                    q1.appendChild(slot);
+                } else if (count <= 10) {
+                    q2.appendChild(slot);
+                }
+            });
         }
     </script>
 </body>
