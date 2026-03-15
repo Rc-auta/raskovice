@@ -11,6 +11,7 @@
             --bg-card: #1e1e1e;
             --text: #e0e0e0;
             --accent-red: #ff4444;
+            --row-alt: #252525;
         }
 
         body {
@@ -18,238 +19,283 @@
             background-color: var(--bg-dark);
             color: var(--text);
             margin: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+            display: flex; flex-direction: column; align-items: center;
         }
 
-        /* VAROVÁNÍ A INFO */
         .header-info {
-            text-align: center;
-            padding: 40px 20px;
+            text-align: center; padding: 40px 20px;
             background: linear-gradient(180deg, #000 0%, var(--bg-dark) 100%);
-            width: 100%;
-            box-sizing: border-box;
+            width: 100%; box-sizing: border-box;
         }
 
         .warning-bar {
-            background: rgba(255, 68, 68, 0.15);
-            border: 1px solid var(--accent-red);
-            color: #ffcccc;
-            padding: 15px;
-            margin: 20px auto;
-            border-radius: 8px;
-            font-weight: bold;
-            max-width: 650px;
+            background: rgba(255, 68, 68, 0.15); border: 1px solid var(--accent-red);
+            color: #ffcccc; padding: 15px; margin: 20px auto; border-radius: 8px;
+            font-weight: bold; max-width: 650px;
         }
 
         /* NAVIGACE */
         .tab-container {
-            display: flex;
-            background-color: #000;
-            width: 100%;
-            justify-content: center;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
+            display: flex; background-color: #000; width: 100%;
+            justify-content: center; position: sticky; top: 0; z-index: 1000;
             border-bottom: 2px solid var(--primary);
         }
 
         .tab-button {
-            background: none;
-            border: none;
-            color: white;
-            padding: 20px;
-            cursor: pointer;
-            font-weight: bold;
-            text-transform: uppercase;
-            font-size: 0.9em;
-            transition: 0.3s;
+            background: none; border: none; color: white; padding: 20px;
+            cursor: pointer; font-weight: bold; text-transform: uppercase;
+            font-size: 0.9em; transition: 0.3s;
         }
 
-        .tab-button.active {
-            color: var(--primary);
-            border-bottom: 4px solid var(--primary);
-        }
+        .tab-button.active { color: var(--primary); border-bottom: 4px solid var(--primary); }
 
         /* OBSAH */
-        .tab-content {
-            display: none;
-            width: 95%;
-            max-width: 1100px;
-            margin-top: 20px;
-        }
-
-        .tab-content.active {
-            display: block;
-        }
+        .tab-content { display: none; width: 95%; max-width: 1100px; margin-top: 20px; }
+        .tab-content.active { display: block; }
 
         .card {
-            background-color: var(--bg-card);
-            border-radius: 12px;
-            padding: 25px;
-            border: 1px solid #333;
-            margin-bottom: 30px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            background-color: var(--bg-card); border-radius: 12px; padding: 25px;
+            border: 1px solid #333; margin-bottom: 30px; box-shadow: 0 4px 15px rgba(0,0,0,0.5);
         }
 
-        h1 { font-size: 2.5em; letter-spacing: 3px; margin: 0; }
-        h2 { color: var(--primary); text-transform: uppercase; border-bottom: 1px solid #444; padding-bottom: 10px; }
+        h2 { color: var(--primary); text-transform: uppercase; border-bottom: 1px solid #444; padding-bottom: 10px; margin-top: 0; }
+
+        /* GALERIE */
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+        .gallery img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 8px;
+            border: 1px solid #444;
+            transition: 0.3s ease;
+            cursor: pointer;
+        }
+        .gallery img:hover {
+            transform: scale(1.05);
+            border-color: var(--primary);
+            box-shadow: 0 0 10px var(--primary);
+        }
 
         /* TABULKY */
-        table { width: 100%; border-collapse: collapse; }
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        th { background-color: #000; color: var(--primary); text-transform: uppercase; font-size: 0.75em; }
         th, td { padding: 15px; text-align: left; border-bottom: 1px solid #333; }
-        th { color: var(--primary); font-size: 0.8em; }
+        tr:nth-child(even) { background-color: var(--row-alt); }
 
-        /* PAVOUK */
+        .points-badge { background: var(--primary); color: black; padding: 2px 8px; border-radius: 4px; font-weight: bold; }
+
+        .history-grid { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 20px; }
+        .hist-btn { 
+            background: #333; color: white; border: 1px solid var(--primary); 
+            padding: 10px 15px; border-radius: 6px; cursor: pointer; font-weight: bold;
+        }
+        .hist-btn:hover { background: var(--primary); color: black; }
+
+        #admin-lock { text-align: center; padding: 40px; }
+        .admin-input { 
+            background: #000; border: 1px solid #444; color: white; 
+            padding: 12px; border-radius: 6px; width: 250px; margin-bottom: 10px;
+        }
+
+        .main-btn {
+            padding: 12px 25px; background-color: var(--primary); border: none;
+            color: black; font-weight: bold; cursor: pointer; border-radius: 6px; 
+            text-transform: uppercase;
+        }
+
         .bracket { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
         .group-card { background: rgba(255,255,255,0.03); padding: 20px; border-radius: 8px; border: 1px solid #444; }
         .slot { background: #333; padding: 12px; margin: 8px 0; border-radius: 4px; border-left: 4px solid var(--primary); font-weight: bold; }
-
-        /* GALERIE */
-        .gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 15px; }
-        .gallery img { width: 100%; height: 200px; object-fit: cover; border-radius: 8px; border: 1px solid #444; transition: 0.3s; }
-        .gallery img:hover { transform: scale(1.02); border-color: var(--primary); }
-
-        iframe { border-radius: 8px; background: white; }
-
-        .main-btn {
-            width: 100%; padding: 15px; background-color: var(--primary); border: none;
-            color: black; font-weight: bold; cursor: pointer; border-radius: 6px; text-transform: uppercase;
-        }
     </style>
 </head>
 <body>
 
     <div class="header-info">
         <h1>ZRU RAŠKOVICE</h1>
-        <p style="color: #888;">Oficiální portál závodů Raškovické Ulice</p>
-        <div class="warning-bar">
-            🏁 DALŠÍ ZÁVOD: Neděle 29. 3. 2026 <br>
-            <span style="font-size: 0.8em; opacity: 0.8;">(Webový pavouk se resetuje každé 2 dny, registrace v Excelu zůstává)</span>
-        </div>
+        <div class="warning-bar">🏁 PŘÍŠTÍ ZÁVOD: 29. 3. 2026</div>
     </div>
 
     <div class="tab-container">
         <button class="tab-button active" onclick="openTab(event, 'registrace')">Registrace</button>
         <button class="tab-button" onclick="openTab(event, 'pavouk')">Pavouk</button>
-        <button class="tab-button" onclick="openTab(event, 'vysledky')">Výsledky</button>
-        <button class="tab-button" onclick="openTab(event, 'admin')">Admin (Excel)</button>
+        <button class="tab-button" onclick="openTab(event, 'vysledky')">Síň Slávy</button>
+        <button class="tab-button" onclick="openTab(event, 'historie')">Odjeté Jízdy</button>
+        <button class="tab-button" onclick="openTab(event, 'admin')">Admin</button>
     </div>
 
     <div id="registrace" class="tab-content active">
         <div class="card">
-            <h2>📝 Přihláška na závod</h2>
-            <p>Vyplň formulář níže. Data se okamžitě odešlou do našeho systému.</p>
-            <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSex1pe5jkqu8VMyg95sUufl3WhH_B0Q-9LYcaNA2jBg6V2jRw/viewform?embedded=true" 
-            width="100%" height="800" frameborder="0" marginheight="0" marginwidth="0">Načítám…</iframe>
+            <h2>📝 Přihláška</h2>
+            <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSex1pe5jkqu8VMyg95sUufl3WhH_B0Q-9LYcaNA2jBg6V2jRw/viewform?embedded=true" width="100%" height="700" frameborder="0">Načítám…</iframe>
         </div>
         <div class="card">
-            <h2>📸 Fotogalerie tratě</h2>
+            <h2>📸 Momentky z tratě</h2>
             <div class="gallery">
-                <img src="foto1.jpg"> <img src="foto2.jpg"> <img src="foto3.jpg">
+                <img src="foto1.jpg" alt="Foto 1">
+                <img src="foto2.jpg" alt="Foto 2">
+                <img src="foto3.jpg" alt="Foto 3">
+                <img src="foto4.jpg" alt="Foto 4">
             </div>
         </div>
     </div>
 
     <div id="pavouk" class="tab-content">
         <div class="card">
-            <h2>🎮 Rozřazení do skupin</h2>
+            <h2>🎮 Kvalifikační skupiny</h2>
             <div class="bracket">
-                <div class="group-card"><h3>KVALIFIKACE 1</h3><div id="p-q1"></div></div>
-                <div class="group-card"><h3>KVALIFIKACE 2</h3><div id="p-q2"></div></div>
-            </div>
-        </div>
-        <div class="card">
-            <div class="gallery">
-                <img src="foto4.jpg"> <img src="foto5.jpg">
+                <div class="group-card"><h3>SKUPINA A</h3><div id="p-q1"></div></div>
+                <div class="group-card"><h3>SKUPINA B</h3><div id="p-q2"></div></div>
             </div>
         </div>
     </div>
 
     <div id="vysledky" class="tab-content">
         <div class="card">
-            <h2>🏆 Síň slávy</h2>
+            <h2>🏆 Celkové Pořadí Šampionátu</h2>
             <table>
-                <thead><tr><th>#</th><th>Jezdec</th><th>Auto</th><th>Kola</th></tr></thead>
-                <tbody id="tabulka-body"></tbody>
+                <thead>
+                    <tr><th>#</th><th>Jezdec</th><th>Kola Celkem</th><th>Body</th></tr>
+                </thead>
+                <tbody id="full-tabulka-body"></tbody>
             </table>
         </div>
     </div>
 
-    <div id="admin" class="tab-content">
+    <div id="historie" class="tab-content">
         <div class="card">
-            <h2>📊 Admin Panel</h2>
-            <p>Zde můžeš ručně přidat jezdce pro zobrazení v pavouku (pro ty, co se neregistrovali online):</p>
-            <input type="text" id="adm-jmeno" placeholder="Jméno a Příjmení">
-            <select id="adm-auto">
-                <option value="BUGGY">BUGGY</option>
-                <option value="TRUGGY">TRUGGY</option>
-            </select>
-            <button class="main-btn" onclick="pridatRucne()">Přidat do pavouka</button>
-            <hr style="margin: 20px 0; border-color: #444;">
-            <button class="main-btn" style="background:#4caf50;" onclick="exportExcel()">Kopírovat seznam pro Excel</button>
-            <p id="status" style="color:var(--primary); text-align:center;"></p>
-        </div>
-        <div class="card">
-             <div class="gallery">
-                <img src="foto6.jpg"> <img src="foto7.jpg"> <img src="foto10.jpg">
+            <h2>🏁 Archiv odjetých jízd</h2>
+            <div id="seznam-jizd" class="history-grid"></div>
+            
+            <div id="detail-jizdy" style="display:none; margin-top:20px; padding:20px; background:#000; border-radius:10px; border: 1px solid var(--primary);">
+                <h3 id="jizda-nazev" style="color:var(--primary); margin-top:0;"></h3>
+                <table>
+                    <thead><tr><th>#</th><th>Jezdec</th><th>Kola</th><th>Body</th></tr></thead>
+                    <tbody id="jizda-tabulka"></tbody>
+                </table>
             </div>
         </div>
     </div>
 
-    <footer style="margin: 50px 0; color: #555; text-align: center;">
-        ZRU Race Control Systems © 2026 | Raškovice
-    </footer>
+    <div id="admin" class="tab-content">
+        <div id="admin-lock">
+            <h2>🔒 Admin Přístup</h2>
+            <input type="password" id="pass-input" class="admin-input" placeholder="Zadej heslo">
+            <br>
+            <button class="main-btn" onclick="checkPass()">Vstoupit</button>
+        </div>
+
+        <div id="admin-content" style="display:none;">
+            <div class="card">
+                <h2>📊 Správa Pavouka</h2>
+                <input type="text" id="adm-jmeno" class="admin-input" placeholder="Jméno jezdce">
+                <button class="main-btn" onclick="pridatDoPavouka()">Přidat do pavouka</button>
+                <button class="main-btn" style="background:red;" onclick="if(confirm('Opravdu resetovat vše?')) {localStorage.clear(); location.reload();}">Resetovat vše</button>
+            </div>
+            <div class="card">
+                <h2>📸 Správa Galerie (Náhledy)</h2>
+                <div class="gallery">
+                    <img src="foto5.jpg" alt="Foto 5">
+                    <img src="foto6.jpg" alt="Foto 6">
+                    <img src="foto7.jpg" alt="Foto 7">
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script>
-        function openTab(evt, tabName) {
-            let contents = document.getElementsByClassName("tab-content");
-            for (let i = 0; i < contents.length; i++) contents[i].classList.remove("active");
-            let buttons = document.getElementsByClassName("tab-button");
-            for (let i = 0; i < buttons.length; i++) buttons[i].classList.remove("active");
-            document.getElementById(tabName).classList.add("active");
+        const bodovani = [25, 18, 15, 12, 10, 8, 6, 4, 2, 1];
+        const historieZavodu = []; // Sem se doplňují data
+
+        function checkPass() {
+            const pass = document.getElementById('pass-input').value;
+            if(pass === "Stepisev99") {
+                document.getElementById('admin-lock').style.display = "none";
+                document.getElementById('admin-content').style.display = "block";
+            } else { alert("Špatné heslo!"); }
+        }
+
+        function openTab(evt, t) {
+            let c = document.getElementsByClassName("tab-content");
+            for (let i=0; i<c.length; i++) c[i].classList.remove("active");
+            let b = document.getElementsByClassName("tab-button");
+            for (let i=0; i<b.length; i++) b[i].classList.remove("active");
+            document.getElementById(t).classList.add("active");
             evt.currentTarget.classList.add("active");
+            if(t === 'vysledky') vypocitejSampionat();
+            if(t === 'historie') vykresliHistorii();
         }
 
-        window.onload = nacti;
+        function vypocitejSampionat() {
+            let sampionat = {};
+            historieZavodu.forEach(zavod => {
+                let serazeni = [...zavod.data].sort((a,b) => b.k - a.k);
+                serazeni.forEach((jezdec, index) => {
+                    if (!sampionat[jezdec.j]) sampionat[jezdec.j] = { body: 0, kola: 0 };
+                    sampionat[jezdec.j].kola += jezdec.k;
+                    sampionat[jezdec.j].body += (bodovani[index] || 0);
+                });
+            });
+            let vysledkyPole = Object.keys(sampionat).map(jmeno => ({
+                jmeno: jmeno, ...sampionat[jmeno]
+            })).sort((a,b) => b.body - a.body || b.kola - a.kola);
 
-        function pridatRucne() {
-            const jmeno = document.getElementById('adm-jmeno').value;
-            const auto = document.getElementById('adm-auto').value;
-            if(!jmeno) return alert("Zadej jméno!");
-            
-            let data = JSON.parse(localStorage.getItem('zru_web_data') || "[]");
-            data.push({ jmeno: jmeno, auto: auto });
-            localStorage.setItem('zru_web_data', JSON.stringify(data));
-            
-            document.getElementById('adm-jmeno').value = "";
-            nacti();
-        }
-
-        function nacti() {
-            let data = JSON.parse(localStorage.getItem('zru_web_data') || "[]");
-            let tbody = document.getElementById('tabulka-body');
-            let q1 = document.getElementById('p-q1');
-            let q2 = document.getElementById('p-q2');
-            
-            tbody.innerHTML = ""; q1.innerHTML = ""; q2.innerHTML = "";
-
-            data.forEach((j, i) => {
-                let n = i + 1;
-                tbody.innerHTML += `<tr><td>${n}</td><td>${j.jmeno}</td><td>${j.auto}</td><td>0</td></tr>`;
-                let slot = `<div class="slot">${n}. ${j.jmeno}</div>`;
-                if(n <= 5) q1.innerHTML += slot; else if(n <= 10) q2.innerHTML += slot;
+            let tbody = document.getElementById('full-tabulka-body');
+            tbody.innerHTML = vysledkyPole.length ? "" : "<tr><td colspan='4'>Zatím žádná data.</td></tr>";
+            vysledkyPole.forEach((r, i) => {
+                tbody.innerHTML += `<tr><td>${i+1}.</td><td>${r.jmeno}</td><td>${r.kola}</td><td><span class="points-badge">${r.body} b</span></td></tr>`;
             });
         }
 
-        function exportExcel() {
-            let data = JSON.parse(localStorage.getItem('zru_web_data') || "[]");
-            let t = "Jméno\tAuto\n";
-            data.forEach(j => t += j.jmeno + "\t" + j.auto + "\n");
-            navigator.clipboard.writeText(t);
-            document.getElementById('status').innerText = "Seznam zkopírován do schránky!";
+        function vykresliHistorii() {
+            let div = document.getElementById('seznam-jizd');
+            div.innerHTML = historieZavodu.length ? "" : "Historie je prázdná.";
+            historieZavodu.forEach(z => {
+                div.innerHTML += `<button class="hist-btn" onclick="ukazJizdu(${z.id})">${z.nazev}</button>`;
+            });
         }
+
+        function ukazJizdu(id) {
+            let z = historieZavodu.find(x => x.id === id);
+            document.getElementById('jizda-nazev').innerText = z.nazev;
+            let tb = document.getElementById('jizda-tabulka');
+            tb.innerHTML = "";
+            let serazeni = [...z.data].sort((a,b) => b.k - a.k);
+            serazeni.forEach((r, i) => {
+                tb.innerHTML += `<tr><td>${i+1}.</td><td>${r.j}</td><td>${r.k}</td><td>+${bodovani[i] || 0}b</td></tr>`;
+            });
+            document.getElementById('detail-jizdy').style.display = "block";
+        }
+
+        function pridatDoPavouka() {
+            let j = document.getElementById('adm-jmeno').value;
+            if(!j) return;
+            let d = JSON.parse(localStorage.getItem('zru_d') || "[]");
+            d.push({j: j});
+            localStorage.setItem('zru_d', JSON.stringify(d));
+            document.getElementById('adm-jmeno').value = "";
+            nactiPavouka();
+        }
+
+        function nactiPavouka() {
+            let data = JSON.parse(localStorage.getItem('zru_d') || "[]");
+            let q1 = document.getElementById('p-q1'); let q2 = document.getElementById('p-q2');
+            q1.innerHTML = ""; q2.innerHTML = "";
+            data.forEach((j, i) => {
+                let s = `<div class="slot">${i+1}. ${j.j}</div>`;
+                if(i < 5) q1.innerHTML += s; else if(i < 10) q2.innerHTML += s;
+            });
+        }
+
+        window.onload = () => {
+            vypocitejSampionat();
+            nactiPavouka();
+        };
     </script>
 </body>
 </html>
