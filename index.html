@@ -34,7 +34,6 @@
             font-weight: bold; max-width: 650px;
         }
 
-        /* NAVIGACE */
         .tab-container {
             display: flex; background-color: #000; width: 100%;
             justify-content: center; position: sticky; top: 0; z-index: 1000;
@@ -49,7 +48,6 @@
 
         .tab-button.active { color: var(--primary); border-bottom: 4px solid var(--primary); }
 
-        /* OBSAH */
         .tab-content { display: none; width: 95%; max-width: 1100px; margin-top: 20px; }
         .tab-content.active { display: block; }
 
@@ -60,7 +58,6 @@
 
         h2 { color: var(--primary); text-transform: uppercase; border-bottom: 1px solid #444; padding-bottom: 10px; margin-top: 0; }
 
-        /* GALERIE */
         .gallery {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
@@ -74,15 +71,8 @@
             border-radius: 8px;
             border: 1px solid #444;
             transition: 0.3s ease;
-            cursor: pointer;
-        }
-        .gallery img:hover {
-            transform: scale(1.05);
-            border-color: var(--primary);
-            box-shadow: 0 0 10px var(--primary);
         }
 
-        /* TABULKY */
         table { width: 100%; border-collapse: collapse; margin-top: 10px; }
         th { background-color: #000; color: var(--primary); text-transform: uppercase; font-size: 0.75em; }
         th, td { padding: 15px; text-align: left; border-bottom: 1px solid #333; }
@@ -137,10 +127,7 @@
         <div class="card">
             <h2>📸 Momentky z tratě</h2>
             <div class="gallery">
-                <img src="foto1.jpg" alt="Foto 1">
-                <img src="foto2.jpg" alt="Foto 2">
-                <img src="foto3.jpg" alt="Foto 3">
-                <img src="foto4.jpg" alt="Foto 4">
+                <img src="foto1.jpg"> <img src="foto2.jpg"> <img src="foto3.jpg"> <img src="foto4.jpg">
             </div>
         </div>
     </div>
@@ -195,14 +182,11 @@
                 <h2>📊 Správa Pavouka</h2>
                 <input type="text" id="adm-jmeno" class="admin-input" placeholder="Jméno jezdce">
                 <button class="main-btn" onclick="pridatDoPavouka()">Přidat do pavouka</button>
-                <button class="main-btn" style="background:red;" onclick="if(confirm('Opravdu resetovat vše?')) {localStorage.clear(); location.reload();}">Resetovat vše</button>
+                <button class="main-btn" style="background:red;" onclick="if(confirm('Opravdu resetovat vše?')) {localStorage.removeItem('zru_d'); location.reload();}">Resetovat paměť pavouka</button>
             </div>
             <div class="card">
-                <h2>📸 Správa Galerie (Náhledy)</h2>
                 <div class="gallery">
-                    <img src="foto5.jpg" alt="Foto 5">
-                    <img src="foto6.jpg" alt="Foto 6">
-                    <img src="foto7.jpg" alt="Foto 7">
+                    <img src="foto5.jpg"> <img src="foto6.jpg"> <img src="foto7.jpg">
                 </div>
             </div>
         </div>
@@ -210,7 +194,13 @@
 
     <script>
         const bodovani = [25, 18, 15, 12, 10, 8, 6, 4, 2, 1];
-        const historieZavodu = []; // Sem se doplňují data
+        const historieZavodu = []; // Zde doplňuješ výsledky pro Sini slávy
+
+        // --- FIX: TADY JSOU JEZDCI NAPEVNO PRO VŠECHNY ---
+        const jezdciNapevno = [
+            {j: "Filip Mikloš"},
+            {j: "Vojta Bialek"}
+        ];
 
         function checkPass() {
             const pass = document.getElementById('pass-input').value;
@@ -275,7 +265,7 @@
         function pridatDoPavouka() {
             let j = document.getElementById('adm-jmeno').value;
             if(!j) return;
-            let d = JSON.parse(localStorage.getItem('zru_d') || "[]");
+            let d = JSON.parse(localStorage.getItem('zru_d') || JSON.stringify(jezdciNapevno));
             d.push({j: j});
             localStorage.setItem('zru_d', JSON.stringify(d));
             document.getElementById('adm-jmeno').value = "";
@@ -283,7 +273,8 @@
         }
 
         function nactiPavouka() {
-            let data = JSON.parse(localStorage.getItem('zru_d') || "[]");
+            // Prioritně bere data z paměti, pokud tam nejsou, vezme ty z kódu
+            let data = JSON.parse(localStorage.getItem('zru_d') || JSON.stringify(jezdciNapevno));
             let q1 = document.getElementById('p-q1'); let q2 = document.getElementById('p-q2');
             q1.innerHTML = ""; q2.innerHTML = "";
             data.forEach((j, i) => {
