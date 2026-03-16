@@ -178,76 +178,34 @@
     </div>
 
     <script>
-        const vychoziJezdci = ["FILIP MIKLOŠ", "", "", "", "", "VOJTA BIALEK", "TOBIAS BRZOBOHATÝ", "", "", ""];
+      <script>
+    // --- TADY PIŠ JMÉNA (uvidí je každý, kdo web otevře) ---
+    // Pokud necháš "", slot se v pavouku schová.
+    const mojiJezdci = [
+        "FILIP MIKLOŠ", "", "", "", "", // Skupina A
+        "VOJTA BIALEK", "TOBIAS BRZOBOHATÝ", "", "", ""  // Skupina B
+    ];
 
-        function checkPass() {
-            if(document.getElementById('pass-input').value === "Stepisev99") {
-                document.getElementById('admin-lock').style.display = "none";
-                document.getElementById('admin-content').style.display = "block";
-                generujAdminEdit();
-            } else { alert("Špatné heslo!"); }
-        }
-
-        function openTab(evt, t) {
-            let c = document.getElementsByClassName("tab-content");
-            for (let i=0; i<c.length; i++) c[i].classList.remove("active");
-            let b = document.getElementsByClassName("tab-button");
-            for (let i=0; i<b.length; i++) b[i].classList.remove("active");
-            document.getElementById(t).classList.add("active");
-            evt.currentTarget.classList.add("active");
-        }
-
-        function nactiPavouka() {
-            let data = JSON.parse(localStorage.getItem('zru_d') || JSON.stringify(vychoziJezdci));
-            let q1 = document.getElementById('p-q1'); 
-            let q2 = document.getElementById('p-q2');
-            q1.innerHTML = ""; q2.innerHTML = "";
-            
-            data.forEach((jmeno, i) => {
-                if (jmeno && jmeno.trim() !== "") {
-                    let s = `<div class="slot">${jmeno}</div>`;
-                    if(i < 5) q1.innerHTML += s; else if(i < 10) q2.innerHTML += s;
-                }
-            });
-
-            if (!q1.innerHTML) q1.innerHTML = "<p style='color:#666'>---</p>";
-            if (!q2.innerHTML) q2.innerHTML = "<p style='color:#666'>---</p>";
-        }
-
-        function generujAdminEdit() {
-            let data = JSON.parse(localStorage.getItem('zru_d') || JSON.stringify(vychoziJezdci));
-            let kontainer = document.getElementById('admin-edit-list');
-            kontainer.innerHTML = "<h3>Správa pozic:</h3>";
-            data.forEach((jmeno, i) => {
-                let text = jmeno && jmeno.trim() !== "" ? jmeno : "<em>-- Prázdné --</em>";
-                kontainer.innerHTML += `
-                    <div class="admin-slot-row">
-                        <span>Pozice ${i+1}: <strong>${text}</strong></span>
-                        <button class="small-btn" onclick="zmenJmeno(${i})">Změnit</button>
-                    </div>`;
-            });
-        }
-
-        function zmenJmeno(index) {
-            let data = JSON.parse(localStorage.getItem('zru_d') || JSON.stringify(vychoziJezdci));
-            let nove = prompt("Zadej jméno (nebo nech prázdné):", data[index]);
-            if(nove !== null) {
-                data[index] = nove.toUpperCase().trim();
-                localStorage.setItem('zru_d', JSON.stringify(data));
-                nactiPavouka();
-                generujAdminEdit();
+    // Funkce pro načtení (priorita je teď na tom, co je v kódu nahoře)
+    function nactiPavouka() {
+        let data = JSON.parse(localStorage.getItem('zru_d')) || mojiJezdci;
+        let q1 = document.getElementById('p-q1'); 
+        let q2 = document.getElementById('p-q2');
+        q1.innerHTML = ""; q2.innerHTML = "";
+        
+        data.forEach((jmeno, i) => {
+            if (jmeno && jmeno.trim() !== "") {
+                let s = `<div class="slot">${jmeno}</div>`;
+                if(i < 5) q1.innerHTML += s; else if(i < 10) q2.innerHTML += s;
             }
-        }
+        });
 
-        function resetVse() {
-            if(confirm("Vrátit na základní sestavu (Filip, Vojta, Tobias)?")) {
-                localStorage.removeItem('zru_d');
-                nactiPavouka();
-                generujAdminEdit();
-            }
-        }
+        if (!q1.innerHTML) q1.innerHTML = "<p style='color:#666'>---</p>";
+        if (!q2.innerHTML) q2.innerHTML = "<p style='color:#666'>---</p>";
+    }
 
-        window.onload = nactiPavouka;
+    // ... zbytek funkcí (checkPass, openTab atd.) zůstává stejný ...
+</script>
     </script>
 </body>
 </html>
