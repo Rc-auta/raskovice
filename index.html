@@ -30,8 +30,14 @@
 
         .warning-bar {
             background: rgba(255, 68, 68, 0.15); border: 1px solid var(--accent-red);
-            color: #ffcccc; padding: 15px; margin: 20px auto; border-radius: 8px;
+            color: #ffcccc; padding: 15px; margin: 10px auto; border-radius: 8px;
             font-weight: bold; max-width: 650px;
+        }
+
+        .info-box {
+            background: rgba(0, 255, 0, 0.05); border: 1px solid var(--primary);
+            padding: 15px; margin: 10px auto; border-radius: 8px; max-width: 800px;
+            display: grid; grid-template-columns: 1fr 1fr; gap: 15px;
         }
 
         .tab-container {
@@ -56,52 +62,29 @@
             border: 1px solid #333; margin-bottom: 30px; box-shadow: 0 4px 15px rgba(0,0,0,0.5);
         }
 
-        h2 { color: var(--primary); text-transform: uppercase; border-bottom: 1px solid #444; padding-bottom: 10px; margin-top: 0; }
+        h2, h3 { color: var(--primary); text-transform: uppercase; border-bottom: 1px solid #444; padding-bottom: 10px; margin-top: 0; }
 
-        .gallery {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 15px;
-            margin-top: 15px;
-        }
-        .gallery img {
-            width: 100%;
-            height: 150px;
-            object-fit: cover;
-            border-radius: 8px;
-            border: 1px solid #444;
-            transition: 0.3s ease;
-        }
-
-        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
-        th { background-color: #000; color: var(--primary); text-transform: uppercase; font-size: 0.75em; }
-        th, td { padding: 15px; text-align: left; border-bottom: 1px solid #333; }
-        tr:nth-child(even) { background-color: var(--row-alt); }
-
-        .points-badge { background: var(--primary); color: black; padding: 2px 8px; border-radius: 4px; font-weight: bold; }
-
-        .history-grid { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 20px; }
-        .hist-btn { 
-            background: #333; color: white; border: 1px solid var(--primary); 
-            padding: 10px 15px; border-radius: 6px; cursor: pointer; font-weight: bold;
-        }
-        .hist-btn:hover { background: var(--primary); color: black; }
-
-        #admin-lock { text-align: center; padding: 40px; }
-        .admin-input { 
-            background: #000; border: 1px solid #444; color: white; 
-            padding: 12px; border-radius: 6px; width: 250px; margin-bottom: 10px;
-        }
-
-        .main-btn {
-            padding: 12px 25px; background-color: var(--primary); border: none;
-            color: black; font-weight: bold; cursor: pointer; border-radius: 6px; 
-            text-transform: uppercase;
-        }
+        .map-link { color: var(--primary); text-decoration: none; font-weight: bold; }
+        .map-link:hover { text-decoration: underline; }
 
         .bracket { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
         .group-card { background: rgba(255,255,255,0.03); padding: 20px; border-radius: 8px; border: 1px solid #444; }
-        .slot { background: #333; padding: 12px; margin: 8px 0; border-radius: 4px; border-left: 4px solid var(--primary); font-weight: bold; }
+        .slot { 
+            background: #333; padding: 15px; margin: 8px 0; border-radius: 4px; 
+            border-left: 4px solid var(--primary); font-weight: bold;
+        }
+
+        .admin-slot-row {
+            display: flex; justify-content: space-between; align-items: center;
+            background: #252525; padding: 10px; margin-bottom: 5px; border-radius: 5px;
+        }
+
+        .main-btn { padding: 12px 25px; background-color: var(--primary); border: none; color: black; font-weight: bold; cursor: pointer; border-radius: 6px; text-transform: uppercase; }
+        .small-btn { padding: 5px 10px; background: #444; color: var(--primary); border: 1px solid var(--primary); border-radius: 4px; cursor: pointer; }
+        .admin-input { background: #000; border: 1px solid #444; color: white; padding: 12px; border-radius: 6px; width: 250px; margin-bottom: 10px; }
+        
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #333; }
     </style>
 </head>
 <body>
@@ -114,21 +97,32 @@
     <div class="tab-container">
         <button class="tab-button active" onclick="openTab(event, 'registrace')">Registrace</button>
         <button class="tab-button" onclick="openTab(event, 'pavouk')">Pavouk</button>
-        <button class="tab-button" onclick="openTab(event, 'vysledky')">Síň Slávy</button>
-        <button class="tab-button" onclick="openTab(event, 'historie')">Odjeté Jízdy</button>
+        <button class="tab-button" onclick="openTab(event, 'historie')">Historie Závodů</button>
+        <button class="tab-button" onclick="openTab(event, 'vysledky')">Celkové Pořadí</button>
         <button class="tab-button" onclick="openTab(event, 'admin')">Admin</button>
     </div>
 
     <div id="registrace" class="tab-content active">
+        <div class="info-box">
+            <div>
+                <strong>🏎️ Musím mít svoje auto?</strong><br>
+                Určitě ne! Auta půjčujeme. Pokud máš ale vlastní, klidně ho vezmi (jen nabij baterky!).
+            </div>
+            <div>
+                <strong>🏆 Musím být profík?</strong><br>
+                Vůbec ne. Jezdíme pro zábavu a proto, že nás to baví!
+            </div>
+        </div>
+
         <div class="card">
             <h2>📝 Přihláška</h2>
-            <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSex1pe5jkqu8VMyg95sUufl3WhH_B0Q-9LYcaNA2jBg6V2jRw/viewform?embedded=true" width="100%" height="700" frameborder="0">Načítám…</iframe>
+            <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSex1pe5jkqu8VMyg95sUufl3WhH_B0Q-9LYcaNA2jBg6V2jRw/viewform?embedded=true" width="100%" height="600" frameborder="0">Načítám…</iframe>
         </div>
-        <div class="card">
-            <h2>📸 Momentky z tratě</h2>
-            <div class="gallery">
-                <img src="foto1.jpg"> <img src="foto2.jpg"> <img src="foto3.jpg"> <img src="foto4.jpg">
-            </div>
+
+        <div class="card" style="text-align: center;">
+            <h2>📍 Kde nás najdete?</h2>
+            <p>Přesné souřadnice tratě: <strong>49.6102322N, 18.4752281E</strong></p>
+            <a href="https://www.google.com/maps/place/49%C2%B036'36.8%22N+18%C2%B028'30.8%22E/" target="_blank" class="map-link">📍 Otevřít v Google Maps</a>
         </div>
     </div>
 
@@ -142,71 +136,55 @@
         </div>
     </div>
 
+    <div id="historie" class="tab-content">
+        <div class="card">
+            <h2>📂 Archiv ZRU</h2>
+            <div style="background: #2a2a2a; padding: 20px; border-radius: 8px;">
+                <h3>📁 ZRU 1 (Sezóna 2026)</h3>
+                <p>🕒 <strong>KVALIFIKACE A:</strong> Zatím neodjeto</p>
+                <p>🕒 <strong>KVALIFIKACE B:</strong> Zatím neodjeto</p>
+                <p>🏆 <strong>FINÁLE A:</strong> Zatím neodjeto</p>
+                <p>🏆 <strong>FINÁLE B:</strong> Zatím neodjeto</p>
+            </div>
+        </div>
+    </div>
+
     <div id="vysledky" class="tab-content">
         <div class="card">
-            <h2>🏆 Celkové Pořadí Šampionátu</h2>
+            <h2>🏆 Síň Slávy - Celkové Body</h2>
             <table>
                 <thead>
-                    <tr><th>#</th><th>Jezdec</th><th>Kola Celkem</th><th>Body</th></tr>
+                    <tr><th>#</th><th>Jezdec</th><th>Kola</th><th>Body</th></tr>
                 </thead>
-                <tbody id="full-tabulka-body"></tbody>
+                <tbody id="full-tabulka-body">
+                    <tr><td colspan="4">Šampionát zatím nezačal.</td></tr>
+                </tbody>
             </table>
         </div>
     </div>
 
-    <div id="historie" class="tab-content">
-        <div class="card">
-            <h2>🏁 Archiv odjetých jízd</h2>
-            <div id="seznam-jizd" class="history-grid"></div>
-            
-            <div id="detail-jizdy" style="display:none; margin-top:20px; padding:20px; background:#000; border-radius:10px; border: 1px solid var(--primary);">
-                <h3 id="jizda-nazev" style="color:var(--primary); margin-top:0;"></h3>
-                <table>
-                    <thead><tr><th>#</th><th>Jezdec</th><th>Kola</th><th>Body</th></tr></thead>
-                    <tbody id="jizda-tabulka"></tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-
     <div id="admin" class="tab-content">
-        <div id="admin-lock">
+        <div id="admin-lock" class="card" style="text-align: center;">
             <h2>🔒 Admin Přístup</h2>
-            <input type="password" id="pass-input" class="admin-input" placeholder="Zadej heslo">
+            <input type="password" id="pass-input" class="admin-input" placeholder="Heslo">
             <br>
             <button class="main-btn" onclick="checkPass()">Vstoupit</button>
         </div>
-
-        <div id="admin-content" style="display:none;">
-            <div class="card">
-                <h2>📊 Správa Pavouka</h2>
-                <input type="text" id="adm-jmeno" class="admin-input" placeholder="Jméno jezdce">
-                <button class="main-btn" onclick="pridatDoPavouka()">Přidat do pavouka</button>
-                <button class="main-btn" style="background:red;" onclick="if(confirm('Opravdu resetovat vše?')) {localStorage.removeItem('zru_d'); location.reload();}">Resetovat paměť pavouka</button>
-            </div>
-            <div class="card">
-                <div class="gallery">
-                    <img src="foto5.jpg"> <img src="foto6.jpg"> <img src="foto7.jpg">
-                </div>
-            </div>
+        <div id="admin-content" style="display:none;" class="card">
+            <h2>📊 Správa Jezdců</h2>
+            <div id="admin-edit-list" style="margin-bottom: 20px;"></div>
+            <button class="main-btn" style="background:red;" onclick="resetVse()">Resetovat vše</button>
         </div>
     </div>
 
     <script>
-        const bodovani = [25, 18, 15, 12, 10, 8, 6, 4, 2, 1];
-        const historieZavodu = []; // Zde doplňuješ výsledky pro Sini slávy
-
-        // --- FIX: TADY JSOU JEZDCI NAPEVNO PRO VŠECHNY ---
-        const jezdciNapevno = [
-            {j: "Filip Mikloš"},
-            {j: "Vojta Bialek"}
-        ];
+        const vychoziJezdci = ["FILIP MIKLOŠ", "", "", "", "", "VOJTA BIALEK", "TOBIAS BRZOBOHATÝ", "", "", ""];
 
         function checkPass() {
-            const pass = document.getElementById('pass-input').value;
-            if(pass === "Stepisev99") {
+            if(document.getElementById('pass-input').value === "Stepisev99") {
                 document.getElementById('admin-lock').style.display = "none";
                 document.getElementById('admin-content').style.display = "block";
+                generujAdminEdit();
             } else { alert("Špatné heslo!"); }
         }
 
@@ -217,76 +195,59 @@
             for (let i=0; i<b.length; i++) b[i].classList.remove("active");
             document.getElementById(t).classList.add("active");
             evt.currentTarget.classList.add("active");
-            if(t === 'vysledky') vypocitejSampionat();
-            if(t === 'historie') vykresliHistorii();
-        }
-
-        function vypocitejSampionat() {
-            let sampionat = {};
-            historieZavodu.forEach(zavod => {
-                let serazeni = [...zavod.data].sort((a,b) => b.k - a.k);
-                serazeni.forEach((jezdec, index) => {
-                    if (!sampionat[jezdec.j]) sampionat[jezdec.j] = { body: 0, kola: 0 };
-                    sampionat[jezdec.j].kola += jezdec.k;
-                    sampionat[jezdec.j].body += (bodovani[index] || 0);
-                });
-            });
-            let vysledkyPole = Object.keys(sampionat).map(jmeno => ({
-                jmeno: jmeno, ...sampionat[jmeno]
-            })).sort((a,b) => b.body - a.body || b.kola - a.kola);
-
-            let tbody = document.getElementById('full-tabulka-body');
-            tbody.innerHTML = vysledkyPole.length ? "" : "<tr><td colspan='4'>Zatím žádná data.</td></tr>";
-            vysledkyPole.forEach((r, i) => {
-                tbody.innerHTML += `<tr><td>${i+1}.</td><td>${r.jmeno}</td><td>${r.kola}</td><td><span class="points-badge">${r.body} b</span></td></tr>`;
-            });
-        }
-
-        function vykresliHistorii() {
-            let div = document.getElementById('seznam-jizd');
-            div.innerHTML = historieZavodu.length ? "" : "Historie je prázdná.";
-            historieZavodu.forEach(z => {
-                div.innerHTML += `<button class="hist-btn" onclick="ukazJizdu(${z.id})">${z.nazev}</button>`;
-            });
-        }
-
-        function ukazJizdu(id) {
-            let z = historieZavodu.find(x => x.id === id);
-            document.getElementById('jizda-nazev').innerText = z.nazev;
-            let tb = document.getElementById('jizda-tabulka');
-            tb.innerHTML = "";
-            let serazeni = [...z.data].sort((a,b) => b.k - a.k);
-            serazeni.forEach((r, i) => {
-                tb.innerHTML += `<tr><td>${i+1}.</td><td>${r.j}</td><td>${r.k}</td><td>+${bodovani[i] || 0}b</td></tr>`;
-            });
-            document.getElementById('detail-jizdy').style.display = "block";
-        }
-
-        function pridatDoPavouka() {
-            let j = document.getElementById('adm-jmeno').value;
-            if(!j) return;
-            let d = JSON.parse(localStorage.getItem('zru_d') || JSON.stringify(jezdciNapevno));
-            d.push({j: j});
-            localStorage.setItem('zru_d', JSON.stringify(d));
-            document.getElementById('adm-jmeno').value = "";
-            nactiPavouka();
         }
 
         function nactiPavouka() {
-            // Prioritně bere data z paměti, pokud tam nejsou, vezme ty z kódu
-            let data = JSON.parse(localStorage.getItem('zru_d') || JSON.stringify(jezdciNapevno));
-            let q1 = document.getElementById('p-q1'); let q2 = document.getElementById('p-q2');
+            let data = JSON.parse(localStorage.getItem('zru_d') || JSON.stringify(vychoziJezdci));
+            let q1 = document.getElementById('p-q1'); 
+            let q2 = document.getElementById('p-q2');
             q1.innerHTML = ""; q2.innerHTML = "";
-            data.forEach((j, i) => {
-                let s = `<div class="slot">${i+1}. ${j.j}</div>`;
-                if(i < 5) q1.innerHTML += s; else if(i < 10) q2.innerHTML += s;
+            
+            data.forEach((jmeno, i) => {
+                if (jmeno && jmeno.trim() !== "") {
+                    let s = `<div class="slot">${jmeno}</div>`;
+                    if(i < 5) q1.innerHTML += s; else if(i < 10) q2.innerHTML += s;
+                }
+            });
+
+            if (!q1.innerHTML) q1.innerHTML = "<p style='color:#666'>---</p>";
+            if (!q2.innerHTML) q2.innerHTML = "<p style='color:#666'>---</p>";
+        }
+
+        function generujAdminEdit() {
+            let data = JSON.parse(localStorage.getItem('zru_d') || JSON.stringify(vychoziJezdci));
+            let kontainer = document.getElementById('admin-edit-list');
+            kontainer.innerHTML = "<h3>Správa pozic:</h3>";
+            data.forEach((jmeno, i) => {
+                let text = jmeno && jmeno.trim() !== "" ? jmeno : "<em>-- Prázdné --</em>";
+                kontainer.innerHTML += `
+                    <div class="admin-slot-row">
+                        <span>Pozice ${i+1}: <strong>${text}</strong></span>
+                        <button class="small-btn" onclick="zmenJmeno(${i})">Změnit</button>
+                    </div>`;
             });
         }
 
-        window.onload = () => {
-            vypocitejSampionat();
-            nactiPavouka();
-        };
+        function zmenJmeno(index) {
+            let data = JSON.parse(localStorage.getItem('zru_d') || JSON.stringify(vychoziJezdci));
+            let nove = prompt("Zadej jméno (nebo nech prázdné):", data[index]);
+            if(nove !== null) {
+                data[index] = nove.toUpperCase().trim();
+                localStorage.setItem('zru_d', JSON.stringify(data));
+                nactiPavouka();
+                generujAdminEdit();
+            }
+        }
+
+        function resetVse() {
+            if(confirm("Vrátit na základní sestavu (Filip, Vojta, Tobias)?")) {
+                localStorage.removeItem('zru_d');
+                nactiPavouka();
+                generujAdminEdit();
+            }
+        }
+
+        window.onload = nactiPavouka;
     </script>
 </body>
 </html>
