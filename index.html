@@ -3,54 +3,139 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ZRU Raškovice | Registrace</title>
+    <title>ZRU Raškovice | Registrační Systém</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-database-compat.js"></script>
     <style>
+        body { background-color: #f1f5f9; color: #1e293b; font-family: 'Arial', sans-serif; }
+        .header-bg { background: linear-gradient(to bottom, #1e40af, #1e3a8a); }
+        .content-box { background: white; border: 1px solid #cbd5e1; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .tab-btn { border-bottom: 2px solid transparent; transition: 0.2s; cursor: pointer; }
+        .tab-btn.active { border-bottom: 2px solid #1e40af; color: #1e40af; font-weight: bold; }
         .btn-primary { background-color: #1e40af; transition: 0.2s; cursor: pointer; }
         .btn-primary:hover { background-color: #1d4ed8; }
+        .warning-box { background-color: #fff1f2; border: 1px solid #fda4af; color: #9f1239; }
     </style>
 </head>
-<body class="bg-slate-100 min-h-screen">
+<body class="min-h-screen">
 
-    <header class="bg-blue-800 text-white py-10 text-center">
-        <h1 class="text-5xl font-black italic uppercase italic">ZRU RAŠKOVICE</h1>
-        <p class="text-blue-200 mt-2 font-bold uppercase tracking-widest">Live Registrace 2026</p>
+    <header class="header-bg text-white py-8 shadow-md text-center lg:text-left">
+        <div class="max-w-6xl mx-auto px-4">
+            <h1 class="text-4xl font-bold tracking-tight uppercase italic text-white text-center lg:text-left">ZRU RAŠKOVICE</h1>
+            <p class="text-blue-100 mt-1 font-semibold uppercase text-sm tracking-wider text-center lg:text-left">Příští závod: 2. května 2026</p>
+        </div>
     </header>
 
-    <main class="max-w-4xl mx-auto px-4 py-12">
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+    <main class="max-w-6xl mx-auto px-4 py-8">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
             
-            <div class="bg-white p-8 rounded-2xl shadow-lg border">
-                <h2 class="text-2xl font-bold mb-6">Zapiš se na závod</h2>
-                <div class="space-y-4">
-                    <input type="text" id="input-jmeno" placeholder="Tvoje jméno a příjmení..." 
-                        class="w-full border-2 rounded-xl py-4 px-6 focus:border-blue-500 outline-none font-bold text-xl">
-                    <button onclick="odeslatDoDatabaze()" class="btn-primary w-full text-white font-black py-5 rounded-xl shadow-lg uppercase tracking-wider text-lg active:scale-95 transition-all">
-                        Odeslat přihlášku
-                    </button>
+            <div class="lg:col-span-3 space-y-6">
+                <div class="content-box rounded-lg overflow-hidden font-bold">
+                    <div class="bg-blue-900 text-white px-4 py-2 uppercase text-[10px] flex justify-between items-center">
+                        <span>Přihlášeni</span>
+                        <span class="animate-pulse text-green-400">● LIVE</span>
+                    </div>
+                    <div id="seznam-jezdcu" class="p-2 space-y-1 text-sm max-h-[400px] overflow-y-auto">
+                        <p class="p-2 text-center text-slate-400 italic text-xs">Načítání...</p>
+                    </div>
+                </div>
+
+                <div class="content-box rounded-lg overflow-hidden">
+                    <div class="bg-slate-100 px-4 py-2 border-b border-slate-200">
+                        <h2 class="font-bold uppercase text-[10px] text-slate-600">Poslední vítězové</h2>
+                    </div>
+                    <div class="p-4 space-y-2 text-xs">
+                        <p class="flex justify-between"><span>Skupina A:</span> <span class="font-bold">Vojtěch Bialek</span></p>
+                        <p class="flex justify-between"><span>Skupina B:</span> <span class="font-bold">Kryštof Kohut</span></p>
+                        <p class="flex justify-between"><span>Skupina C:</span> <span class="font-bold">David Ševčík</span></p>
+                    </div>
                 </div>
             </div>
 
-            <div class="bg-slate-900 text-white p-8 rounded-2xl shadow-lg text-center flex flex-col justify-center">
-                <p class="text-slate-400 font-bold uppercase text-xs mb-2 tracking-widest">Aktuálně přihlášeno</p>
-                <div id="pocitadlo" class="text-8xl font-black italic">0</div>
-                <p class="mt-4 text-slate-500 font-bold uppercase text-xs">Limit: 20 pilotů</p>
+            <div class="lg:col-span-5">
+                <div class="content-box rounded-lg p-6">
+                    <h2 class="text-2xl font-bold text-slate-800 mb-6 border-b pb-2">Registrace na 2. 5.</h2>
+                    
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-bold text-slate-700 mb-1">Jméno a Příjmení jezdce</label>
+                            <input type="text" id="input-jmeno" placeholder="Zadejte celé jméno..." 
+                                class="w-full border border-slate-300 rounded px-4 py-3 focus:ring-2 focus:ring-blue-500 outline-none font-bold">
+                        </div>
+                        <button type="button" onclick="odeslatDoDatabaze()" class="btn-primary w-full text-white font-bold py-4 rounded shadow-lg uppercase tracking-wider">
+                            Odeslat přihlášku
+                        </button>
+                    </div>
+
+                    <div class="mt-8 flex items-center justify-between p-4 bg-blue-50 rounded-lg border border-blue-100">
+                        <div>
+                            <p class="text-xs text-blue-700 font-bold uppercase tracking-widest">Kapacita naplněna</p>
+                            <p id="pocitadlo" class="text-5xl font-black text-blue-900 leading-none">0</p>
+                        </div>
+                        <div class="text-right text-slate-500">
+                            <p class="text-xs uppercase font-bold tracking-widest">Limit</p>
+                            <p class="text-2xl font-bold">20</p>
+                        </div>
+                    </div>
+                </div>
             </div>
 
-        </div>
+            <div class="lg:col-span-4">
+                <div class="content-box rounded-lg overflow-hidden">
+                    <div class="flex border-b border-slate-200">
+                        <button onclick="switchTab('info')" id="btn-info" class="tab-btn active flex-1 py-3 text-sm uppercase">Info</button>
+                        <button onclick="switchTab('rules')" id="btn-rules" class="tab-btn flex-1 py-3 text-sm uppercase text-slate-500">Pravidla</button>
+                    </div>
 
-        <div class="mt-8 bg-white rounded-2xl shadow-lg border overflow-hidden">
-            <div class="bg-slate-50 px-6 py-4 border-b font-bold text-slate-600 uppercase text-xs tracking-widest">Startovní listina</div>
-            <div id="seznam-jezdcu" class="divide-y divide-slate-100">
-                <p class="p-6 text-center text-slate-400 italic">Načítám data z Raškovic...</p>
+                    <div id="tab-info" class="p-4 space-y-4">
+                        <div class="space-y-2">
+                            <h3 class="font-bold border-l-4 border-blue-600 pl-2 text-slate-800 uppercase text-xs">Program (2. května)</h3>
+                            <ul class="text-sm space-y-1 text-slate-600">
+                                <li class="flex justify-between"><span>12:00</span> <span class="font-bold">Sraz jezdců</span></li>
+                                <li class="flex justify-between"><span>13:00</span> <span class="font-bold text-blue-700">Start kvalifikace</span></li>
+                            </ul>
+                        </div>
+                        <div class="space-y-2 pt-2 border-t">
+                            <h3 class="font-bold border-l-4 border-slate-400 pl-2 text-slate-800 uppercase text-xs">Pořadatelé</h3>
+                            <div class="text-xs space-y-1">
+                                <p class="flex justify-between italic"><span>Štěpán Ševčík</span> <a href="tel:776814611" class="text-blue-700 font-bold underline">776 814 611</a></p>
+                                <p class="flex justify-between italic"><span>Vojtěch Bialek</span> <a href="tel:732418997" class="text-blue-700 font-bold underline">732 418 997</a></p>
+                            </div>
+                        </div>
+                        <div class="pt-2">
+                            <a href="https://chat.whatsapp.com/FrQ1fDaMPhp5CWLg64VhHQ" target="_blank" 
+                               class="block text-center bg-green-700 text-white py-2 rounded text-xs font-bold hover:bg-green-800 transition shadow-sm uppercase tracking-wider">
+                                WhatsApp Skupina
+                            </a>
+                        </div>
+                    </div>
+
+                    <div id="tab-rules" class="hidden p-4 space-y-4">
+                        <div class="warning-box p-3 rounded text-[11px] font-bold leading-tight">
+                            ⚠️ VAROVÁNÍ: Nadávky, pomlouvání nebo urážky na skupině budou přísně trestány zákazem startu!
+                        </div>
+                        <div class="text-[11px] space-y-2 text-slate-600">
+                            <p class="font-bold text-slate-800 uppercase">Technické pravidla:</p>
+                            <ul class="list-disc list-inside space-y-1">
+                                <li>Měřítka: 1:10 až 1:18 Off-road</li>
+                                <li>Rychlost: 35 - 65 km/h</li>
+                                <li>Nabíječky vlastní s sebou</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
             </div>
+
         </div>
     </main>
 
+    <footer class="mt-12 border-t border-slate-200 py-6 text-center text-slate-400 text-[10px] uppercase tracking-widest">
+        ZRU Management System v2.1 | Raškovice
+    </footer>
+
     <script>
-        // TVOJE PŘESNÁ KONFIGURACE (Opravená adresa databáze)
+        // === FIREBASE KONFIGURACE (TVOJE FUNKČNÍ) ===
         const firebaseConfig = {
             apiKey: "AIzaSyCLApQOE2w3sO-wGSfMWZQgjdZidIMNvHA",
             authDomain: "zru-rc.firebaseapp.com",
@@ -58,7 +143,6 @@
             storageBucket: "zru-rc.appspot.com",
             messagingSenderId: "778417701253",
             appId: "1:778417701253:web:afdfad7a4e69d29f4fc4ec",
-            // Tady byla ta chyba - teď je tam ta tvoje adresa z fotky:
             databaseURL: "https://zru-rc-default-rtdb.firebaseio.com"
         };
 
@@ -68,48 +152,49 @@
         function odeslatDoDatabaze() {
             const input = document.getElementById('input-jmeno');
             const jmeno = input.value.trim();
-
-            if (jmeno === "") {
-                alert("Napiš jméno!");
-                return;
-            }
+            if (jmeno === "") return alert("Zadej jméno!");
 
             database.ref('jezdci').push({
                 jmeno: jmeno,
                 cas: Date.now()
-            })
-            .then(() => {
-                input.value = "";
-            })
-            .catch((error) => {
-                alert("Chyba: " + error.message);
-            });
+            }).then(() => { input.value = ""; });
         }
 
-        // Automatické načítání
         database.ref('jezdci').on('value', (snapshot) => {
             const data = snapshot.val();
             const seznam = document.getElementById('seznam-jezdcu');
             const pocitadlo = document.getElementById('pocitadlo');
-            
             seznam.innerHTML = "";
             let pocet = 0;
-
             if (data) {
-                // Seřadíme od nejnovějších
-                const entries = Object.values(data).reverse();
-                entries.forEach(jezdec => {
+                Object.values(data).reverse().forEach(jezdec => {
                     const div = document.createElement('div');
-                    div.className = "p-4 px-8 flex justify-between items-center font-bold text-slate-800";
-                    div.innerHTML = `<span>${jezdec.jmeno}</span><span class="text-blue-600 text-[10px] bg-blue-50 px-2 py-1 rounded">POTVRZENO</span>`;
+                    div.className = "p-2 bg-slate-50 border-b font-bold flex justify-between items-center";
+                    div.innerHTML = `<span>${jezdec.jmeno}</span><span class="text-green-600 text-[9px] uppercase">OK</span>`;
                     seznam.appendChild(div);
                     pocet++;
                 });
             } else {
-                seznam.innerHTML = '<p class="p-8 text-center text-slate-400 italic">Zatím nikdo, buď první!</p>';
+                seznam.innerHTML = '<p class="text-center py-4 text-slate-400 italic text-xs">Žádný jezdec.</p>';
             }
             pocitadlo.innerText = pocet;
         });
+
+        function switchTab(tab) {
+            const info = document.getElementById('tab-info');
+            const rules = document.getElementById('tab-rules');
+            const btnInfo = document.getElementById('btn-info');
+            const btnRules = document.getElementById('btn-rules');
+            if (tab === 'info') {
+                info.classList.remove('hidden'); rules.classList.add('hidden');
+                btnInfo.classList.add('active'); btnInfo.classList.remove('text-slate-500');
+                btnRules.classList.remove('active'); btnRules.classList.add('text-slate-500');
+            } else {
+                info.classList.add('hidden'); rules.classList.remove('hidden');
+                btnRules.classList.add('active'); btnRules.classList.remove('text-slate-500');
+                btnInfo.classList.remove('active'); btnInfo.classList.add('text-slate-500');
+            }
+        }
     </script>
 </body>
 </html>
