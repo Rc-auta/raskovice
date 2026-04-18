@@ -3,251 +3,206 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ZRU - Race Control Portal</title>
+    <title>ZRU Raškovice | Registrační Systém</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-database-compat.js"></script>
     <style>
-        :root {
-            --primary: #00ff00;
-            --bg-dark: #121212;
-            --bg-card: #1e1e1e;
-            --text: #e0e0e0;
-            --accent-red: #ff4444;
-            --row-alt: #252525;
-        }
-
-        body {
-            font-family: 'Segoe UI', Roboto, sans-serif;
-            background-color: var(--bg-dark);
-            color: var(--text);
-            margin: 0;
-            display: flex; flex-direction: column; align-items: center;
-        }
-
-        .header-info {
-            text-align: center; padding: 40px 20px;
-            background: linear-gradient(180deg, #000 0%, var(--bg-dark) 100%);
-            width: 100%; box-sizing: border-box;
-        }
-
-        .warning-bar {
-            background: rgba(255, 68, 68, 0.15); border: 1px solid var(--accent-red);
-            color: #ffcccc; padding: 15px; margin: 10px auto; border-radius: 8px;
-            font-weight: bold; max-width: 650px;
-        }
-
-        .info-box {
-            background: rgba(0, 255, 0, 0.05); border: 1px solid var(--primary);
-            padding: 15px; margin: 10px auto; border-radius: 8px; max-width: 800px;
-            display: grid; grid-template-columns: 1fr 1fr; gap: 15px;
-        }
-
-        .tab-container {
-            display: flex; background-color: #000; width: 100%;
-            justify-content: center; position: sticky; top: 0; z-index: 1000;
-            border-bottom: 2px solid var(--primary);
-        }
-
-        .tab-button {
-            background: none; border: none; color: white; padding: 20px;
-            cursor: pointer; font-weight: bold; text-transform: uppercase;
-            font-size: 0.9em; transition: 0.3s;
-        }
-
-        .tab-button.active { color: var(--primary); border-bottom: 4px solid var(--primary); }
-
-        .tab-content { display: none; width: 95%; max-width: 1100px; margin-top: 20px; }
-        .tab-content.active { display: block; }
-
-        .card {
-            background-color: var(--bg-card); border-radius: 12px; padding: 25px;
-            border: 1px solid #333; margin-bottom: 30px; box-shadow: 0 4px 15px rgba(0,0,0,0.5);
-        }
-
-        h2, h3 { color: var(--primary); text-transform: uppercase; border-bottom: 1px solid #444; padding-bottom: 10px; margin-top: 0; }
-
-        .map-link { color: var(--primary); text-decoration: none; font-weight: bold; }
-        .map-link:hover { text-decoration: underline; }
-
-        .bracket { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
-        .group-card { background: rgba(255,255,255,0.03); padding: 20px; border-radius: 8px; border: 1px solid #444; }
-        .slot { 
-            background: #333; padding: 15px; margin: 8px 0; border-radius: 4px; 
-            border-left: 4px solid var(--primary); font-weight: bold;
-        }
-
-        .admin-slot-row {
-            display: flex; justify-content: space-between; align-items: center;
-            background: #252525; padding: 10px; margin-bottom: 5px; border-radius: 5px;
-        }
-
-        .main-btn { padding: 12px 25px; background-color: var(--primary); border: none; color: black; font-weight: bold; cursor: pointer; border-radius: 6px; text-transform: uppercase; }
-        .small-btn { padding: 5px 10px; background: #444; color: var(--primary); border: 1px solid var(--primary); border-radius: 4px; cursor: pointer; }
-        .admin-input { background: #000; border: 1px solid #444; color: white; padding: 12px; border-radius: 6px; width: 250px; margin-bottom: 10px; }
-        
-        table { width: 100%; border-collapse: collapse; }
-        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #333; }
+        body { background-color: #f1f5f9; color: #1e293b; font-family: 'Arial', sans-serif; }
+        .header-bg { background: linear-gradient(to bottom, #1e40af, #1e3a8a); }
+        .content-box { background: white; border: 1px solid #cbd5e1; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .tab-btn { border-bottom: 2px solid transparent; transition: 0.2s; cursor: pointer; }
+        .tab-btn.active { border-bottom: 2px solid #1e40af; color: #1e40af; font-weight: bold; }
+        .btn-primary { background-color: #1e40af; transition: 0.2s; cursor: pointer; }
+        .btn-primary:hover { background-color: #1d4ed8; }
+        .warning-box { background-color: #fff1f2; border: 1px solid #fda4af; color: #9f1239; }
+        .info-box { background-color: #eff6ff; border: 1px solid #bfdbfe; color: #1e40af; }
     </style>
 </head>
-<body>
+<body class="min-h-screen">
 
-    <div class="header-info">
-        <h1>ZRU RAŠKOVICE</h1>
-        <div class="warning-bar">🏁 PŘÍŠTÍ ZÁVOD: 29. 3. 2026</div>
-    </div>
+    <header class="header-bg text-white py-8 shadow-md text-center lg:text-left">
+        <div class="max-w-6xl mx-auto px-4">
+            <h1 class="text-4xl font-bold tracking-tight uppercase italic text-white">ZRU RAŠKOVICE</h1>
+            <p class="text-blue-100 mt-1 font-semibold uppercase text-sm tracking-wider text-center lg:text-left">Příští závod: 2. května 2026</p>
+        </div>
+    </header>
 
-    <div class="tab-container">
-        <button class="tab-button active" onclick="openTab(event, 'registrace')">Registrace</button>
-        <button class="tab-button" onclick="openTab(event, 'pavouk')">Pavouk</button>
-        <button class="tab-button" onclick="openTab(event, 'historie')">Historie Závodů</button>
-        <button class="tab-button" onclick="openTab(event, 'vysledky')">Celkové Pořadí</button>
-        <button class="tab-button" onclick="openTab(event, 'admin')">Admin</button>
-    </div>
+    <main class="max-w-6xl mx-auto px-4 py-8">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+            
+            <div class="lg:col-span-3 space-y-6">
+                <div class="content-box rounded-lg overflow-hidden">
+                    <div class="bg-slate-100 px-4 py-2 border-b border-slate-200 uppercase text-[10px] font-bold text-slate-600">
+                        Vítězové posledně
+                    </div>
+                    <div class="p-4 space-y-2 text-sm">
+                        <p>A: <strong>Vojtěch Bialek</strong></p>
+                        <p>B: <strong>Kryštof Kohut</strong></p>
+                        <p>C: <strong>David Ševčík</strong></p>
+                    </div>
+                </div>
 
-    <div id="registrace" class="tab-content active">
-        <div class="info-box">
-            <div>
-                <strong>🏎️ Musím mít svoje auto?</strong><br>
-                Určitě ne! Auta půjčujeme. Pokud máš ale vlastní, klidně ho vezmi (jen nabij baterky!).
+                <div class="content-box rounded-lg overflow-hidden">
+                    <div class="bg-blue-900 text-white px-4 py-2 uppercase text-[10px] font-bold">
+                        Aktuálně přihlášeni
+                    </div>
+                    <div id="seznam-jezdcu" class="p-2 space-y-1 text-xs">
+                        <p class="p-2 text-center text-slate-400 italic">Načítání...</p>
+                    </div>
+                </div>
             </div>
-            <div>
-                <strong>🏆 Musím být profík?</strong><br>
-                Vůbec ne. Jezdíme pro zábavu a proto, že nás to baví!
+
+            <div class="lg:col-span-5">
+                <div class="content-box rounded-lg p-6">
+                    <h2 class="text-2xl font-bold text-slate-800 mb-6 border-b pb-2">Registrace na 2. 5.</h2>
+                    
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-bold text-slate-700 mb-1">Jméno a Příjmení jezdce</label>
+                            <input type="text" id="input-jmeno" placeholder="Zadejte celé jméno..." 
+                                class="w-full border border-slate-300 rounded px-4 py-3 focus:ring-2 focus:ring-blue-500 outline-none">
+                        </div>
+                        <button onclick="odeslatDoDatabaze()" class="btn-primary w-full text-white font-bold py-4 rounded shadow uppercase tracking-wider">
+                            Odeslat přihlášku
+                        </button>
+                    </div>
+
+                    <div class="info-box mt-6 p-4 rounded-lg text-sm text-center font-bold italic">
+                        🏎️ Nemáš auto? Kontaktuj nás a možná ti auto půjčíme!
+                    </div>
+
+                    <div class="mt-8 flex items-center justify-between p-4 bg-blue-50 rounded-lg border border-blue-100">
+                        <div>
+                            <p class="text-xs text-blue-700 font-bold uppercase">Přihlášeno</p>
+                            <p id="pocitadlo" class="text-4xl font-black text-blue-900">0</p>
+                        </div>
+                        <div class="text-right text-slate-500">
+                            <p class="text-xs uppercase font-bold">Kapacita</p>
+                            <p class="text-xl font-bold">20</p>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
 
-        <div class="card">
-            <h2>📝 Přihláška</h2>
-            <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSex1pe5jkqu8VMyg95sUufl3WhH_B0Q-9LYcaNA2jBg6V2jRw/viewform?embedded=true" width="100%" height="600" frameborder="0">Načítám…</iframe>
-        </div>
+            <div class="lg:col-span-4">
+                <div class="content-box rounded-lg overflow-hidden">
+                    <div class="flex border-b border-slate-200">
+                        <button onclick="switchTab('info')" id="btn-info" class="tab-btn active flex-1 py-3 text-sm uppercase">Info</button>
+                        <button onclick="switchTab('rules')" id="btn-rules" class="tab-btn flex-1 py-3 text-sm uppercase text-slate-500">Pravidla</button>
+                    </div>
 
-        <div class="card" style="text-align: center;">
-            <h2>📍 Kde nás najdete?</h2>
-            <p>Přesné souřadnice tratě: <strong>49.6102322N, 18.4752281E</strong></p>
-            <a href="https://www.google.com/maps/place/49%C2%B036'36.8%22N+18%C2%B028'30.8%22E/" target="_blank" class="map-link">📍 Otevřít v Google Maps</a>
-        </div>
-    </div>
+                    <div id="tab-info" class="p-4 space-y-4">
+                        <div class="space-y-2">
+                            <h3 class="font-bold border-l-4 border-blue-600 pl-2 text-slate-800 uppercase text-xs">Program (2. května)</h3>
+                            <ul class="text-sm space-y-1 text-slate-600">
+                                <li class="flex justify-between"><span>12:00</span> <span class="font-bold">Sraz jezdců</span></li>
+                                <li class="flex justify-between"><span>13:00</span> <span class="font-bold text-blue-700">Start kvalifikace</span></li>
+                            </ul>
+                        </div>
+                        <div class="space-y-2 pt-2 border-t">
+                            <h3 class="font-bold border-l-4 border-slate-400 pl-2 text-slate-800 uppercase text-xs">Pořadatelé</h3>
+                            <div class="text-xs space-y-1">
+                                <p class="flex justify-between italic"><span>Štěpán Ševčík</span> <a href="tel:776814611" class="text-blue-700 font-bold underline">776 814 611</a></p>
+                                <p class="flex justify-between italic"><span>Vojtěch Bialek</span> <a href="tel:732418997" class="text-blue-700 font-bold underline">732 418 997</a></p>
+                            </div>
+                        </div>
+                        <div class="pt-2">
+                            <a href="https://chat.whatsapp.com/FrQ1fDaMPhp5CWLg64VhHQ" target="_blank" 
+                               class="block text-center bg-green-700 text-white py-2 rounded text-xs font-bold hover:bg-green-800 transition shadow-sm uppercase">
+                                WhatsApp skupina závodu
+                            </a>
+                        </div>
+                    </div>
 
-    <div id="pavouk" class="tab-content">
-        <div class="card">
-            <h2>🎮 Kvalifikační skupiny</h2>
-            <div class="bracket">
-                <div class="group-card"><h3>SKUPINA A</h3><div id="p-q1"></div></div>
-                <div class="group-card"><h3>SKUPINA B</h3><div id="p-q2"></div></div>
+                    <div id="tab-rules" class="hidden p-4 space-y-4 text-sm">
+                        <div class="warning-box p-3 rounded text-[11px] font-bold leading-tight">
+                            ⚠️ VAROVÁNÍ: Jakékoliv vulgární vyjadřování, pomlouvání nebo urážení ostatních na WhatsApp skupině bude přísně TRESTÁNO! Chovejte se k sobě slušně.
+                        </div>
+                        <div class="text-xs space-y-2 text-slate-600">
+                            <p class="font-bold text-slate-800 uppercase text-[10px]">Technické pravidla:</p>
+                            <ul class="list-disc list-inside space-y-1">
+                                <li>Měřítka: 1:10 až 1:18 Off-road</li>
+                                <li>Rychlost: 35 - 65 km/h</li>
+                                <li>Nabíječky vlastní s sebou</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
-    </div>
 
-    <div id="historie" class="tab-content">
-        <div class="card">
-            <h2>📂 Archiv ZRU</h2>
-            <div style="background: #2a2a2a; padding: 20px; border-radius: 8px;">
-                <h3>📁 ZRU 1 (Sezóna 2026)</h3>
-                <p>🕒 <strong>KVALIFIKACE A:</strong> Zatím neodjeto</p>
-                <p>🕒 <strong>KVALIFIKACE B:</strong> Zatím neodjeto</p>
-                <p>🏆 <strong>FINÁLE A:</strong> Zatím neodjeto</p>
-                <p>🏆 <strong>FINÁLE B:</strong> Zatím neodjeto</p>
-            </div>
         </div>
-    </div>
+    </main>
 
-    <div id="vysledky" class="tab-content">
-        <div class="card">
-            <h2>🏆 Síň Slávy - Celkové Body</h2>
-            <table>
-                <thead>
-                    <tr><th>#</th><th>Jezdec</th><th>Kola</th><th>Body</th></tr>
-                </thead>
-                <tbody id="full-tabulka-body">
-                    <tr><td colspan="4">Šampionát zatím nezačal.</td></tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-
-    <div id="admin" class="tab-content">
-        <div id="admin-lock" class="card" style="text-align: center;">
-            <h2>🔒 Admin Přístup</h2>
-            <input type="password" id="pass-input" class="admin-input" placeholder="Heslo">
-            <br>
-            <button class="main-btn" onclick="checkPass()">Vstoupit</button>
-        </div>
-        <div id="admin-content" style="display:none;" class="card">
-            <h2>📊 Správa Jezdců</h2>
-            <div id="admin-edit-list" style="margin-bottom: 20px;"></div>
-            <button class="main-btn" style="background:red;" onclick="resetVse()">Resetovat vše</button>
-        </div>
-    </div>
+    <footer class="mt-12 border-t border-slate-200 py-6 text-center text-slate-400 text-[10px] uppercase tracking-widest">
+        ZRU Management System v2.1 | Raškovice
+    </footer>
 
     <script>
-    const vychoziJezdci = ["FILIP MIKLOŠ", "DAVID ŠEVČÍK", "ANTONÍN KUČERA", "KRYŠTOF KOHUT", "", "VOJTA BIALEK", "TOBIAS BRZOBOHATÝ", "TOMÁŠ KOLÁČEK", "", ""];
+        // === NASTAVENÍ FIREBASE ===
+        const firebaseConfig = {
+            apiKey: "AIzaSyCLApQOE2w3sO-wGSfMWZQgjdZidIMNvHA",
+            authDomain: "zru-rc.firebaseapp.com",
+            projectId: "zru-rc",
+            storageBucket: "zru-rc.firebasestorage.app",
+            messagingSenderId: "778417701253",
+            appId: "1:778417701253:web:afdfad7a4e69d29f4fc4ec",
+            measurementId: "G-G1P9RWBR2V",
+            databaseURL: "https://zru-rc-default-rtdb.europe-west1.firebasedatabase.app"
+        };
 
-        function checkPass() {
-            if(document.getElementById('pass-input').value === "Stepisev99") {
-                document.getElementById('admin-lock').style.display = "none";
-                document.getElementById('admin-content').style.display = "block";
-                generujAdminEdit();
-            } else { alert("Špatné heslo!"); }
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+
+        function odeslatDoDatabaze() {
+            const input = document.getElementById('input-jmeno');
+            const jmeno = input.value.trim();
+            if (jmeno === "") return alert("Zadej jméno!");
+
+            database.ref('jezdci').push({
+                jmeno: jmeno,
+                cas: Date.now()
+            }).then(() => { input.value = ""; });
         }
 
-        function openTab(evt, t) {
-            let c = document.getElementsByClassName("tab-content");
-            for (let i=0; i<c.length; i++) c[i].classList.remove("active");
-            let b = document.getElementsByClassName("tab-button");
-            for (let i=0; i<b.length; i++) b[i].classList.remove("active");
-            document.getElementById(t).classList.add("active");
-            evt.currentTarget.classList.add("active");
-        }
-
-        function nactiPavouka() {
-            let data = JSON.parse(localStorage.getItem('zru_d') || JSON.stringify(vychoziJezdci));
-            let q1 = document.getElementById('p-q1'); 
-            let q2 = document.getElementById('p-q2');
-            q1.innerHTML = ""; q2.innerHTML = "";
+        database.ref('jezdci').on('value', (snapshot) => {
+            const data = snapshot.val();
+            const seznam = document.getElementById('seznam-jezdcu');
+            const pocitadlo = document.getElementById('pocitadlo');
             
-            data.forEach((jmeno, i) => {
-                if (jmeno && jmeno.trim() !== "") {
-                    let s = `<div class="slot">${jmeno}</div>`;
-                    if(i < 5) q1.innerHTML += s; else if(i < 10) q2.innerHTML += s;
-                }
-            });
+            seznam.innerHTML = "";
+            let pocet = 0;
 
-            if (!q1.innerHTML) q1.innerHTML = "<p style='color:#666'>---</p>";
-            if (!q2.innerHTML) q2.innerHTML = "<p style='color:#666'>---</p>";
-        }
+            if (data) {
+                Object.values(data).forEach(jezdec => {
+                    const div = document.createElement('div');
+                    div.className = "p-2 bg-slate-50 border-b font-bold flex justify-between items-center";
+                    div.innerHTML = `<span>${jezdec.jmeno}</span><span class="text-green-600 text-[9px] uppercase font-black">OK</span>`;
+                    seznam.appendChild(div);
+                    pocet++;
+                });
+            } else {
+                seznam.innerHTML = '<p class="text-center py-4 text-slate-400 italic">Nikdo nepřihlášen.</p>';
+            }
+            pocitadlo.innerText = pocet;
+        });
 
-        function generujAdminEdit() {
-            let data = JSON.parse(localStorage.getItem('zru_d') || JSON.stringify(vychoziJezdci));
-            let kontainer = document.getElementById('admin-edit-list');
-            kontainer.innerHTML = "<h3>Správa pozic:</h3>";
-            data.forEach((jmeno, i) => {
-                let text = jmeno && jmeno.trim() !== "" ? jmeno : "<em>-- Prázdné --</em>";
-                kontainer.innerHTML += `
-                    <div class="admin-slot-row">
-                        <span>Pozice ${i+1}: <strong>${text}</strong></span>
-                        <button class="small-btn" onclick="zmenJmeno(${i})">Změnit</button>
-                    </div>`;
-            });
-        }
+        function switchTab(tab) {
+            const info = document.getElementById('tab-info');
+            const rules = document.getElementById('tab-rules');
+            const btnInfo = document.getElementById('btn-info');
+            const btnRules = document.getElementById('btn-rules');
 
-        function zmenJmeno(index) {
-            let data = JSON.parse(localStorage.getItem('zru_d') || JSON.stringify(vychoziJezdci));
-            let nove = prompt("Zadej jméno (nebo nech prázdné):", data[index]);
-            if(nove !== null) {
-                data[index] = nove.toUpperCase().trim();
-                localStorage.setItem('zru_d', JSON.stringify(data));
-                nactiPavouka();
-                generujAdminEdit();
+            if (tab === 'info') {
+                info.classList.remove('hidden'); rules.classList.add('hidden');
+                btnInfo.classList.add('active'); btnInfo.classList.remove('text-slate-500');
+                btnRules.classList.remove('active'); btnRules.classList.add('text-slate-500');
+            } else {
+                info.classList.add('hidden'); rules.classList.remove('hidden');
+                btnRules.classList.add('active'); btnRules.classList.remove('text-slate-500');
+                btnInfo.classList.remove('active'); btnInfo.classList.add('text-slate-500');
             }
         }
-
-        function resetVse() {
-            if(confirm("Vrátit na základní sestavu (Filip, Vojta, Tobias)?")) {
-                localStorage.removeItem('zru_d');
-                nactiPavouka();
-                generujAdminEdit();
-            }
-        }
-
-        window.onload = nactiPavouka;
     </script>
 </body>
 </html>
