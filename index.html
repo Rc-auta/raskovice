@@ -16,14 +16,15 @@
         .btn-primary { background-color: #1e40af; transition: 0.2s; cursor: pointer; }
         .btn-primary:hover { background-color: #1d4ed8; }
         .warning-box { background-color: #fff1f2; border: 1px solid #fda4af; color: #9f1239; }
+        .rent-info { background-color: #f0f9ff; border: 1px solid #bae6fd; color: #0369a1; }
     </style>
 </head>
 <body class="min-h-screen">
 
-    <header class="header-bg text-white py-8 shadow-md text-center lg:text-left">
-        <div class="max-w-6xl mx-auto px-4">
-            <h1 class="text-4xl font-bold tracking-tight uppercase italic text-white text-center lg:text-left">ZRU RAŠKOVICE</h1>
-            <p class="text-blue-100 mt-1 font-semibold uppercase text-sm tracking-wider text-center lg:text-left">Příští závod: 2. května 2026</p>
+    <header class="header-bg text-white py-8 shadow-md">
+        <div class="max-w-6xl mx-auto px-4 text-center lg:text-left">
+            <h1 class="text-4xl font-bold tracking-tight uppercase italic">ZRU RAŠKOVICE</h1>
+            <p class="text-blue-100 mt-1 font-semibold uppercase text-sm tracking-wider">Příští závod: 2. května 2026</p>
         </div>
     </header>
 
@@ -31,7 +32,7 @@
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
             
             <div class="lg:col-span-3 space-y-6">
-                <div class="content-box rounded-lg overflow-hidden font-bold">
+                <div class="content-box rounded-lg overflow-hidden font-bold text-center lg:text-left">
                     <div class="bg-blue-900 text-white px-4 py-2 uppercase text-[10px] flex justify-between items-center">
                         <span>Přihlášeni</span>
                         <span class="animate-pulse text-green-400">● LIVE</span>
@@ -68,14 +69,19 @@
                         </button>
                     </div>
 
+                    <div class="rent-info mt-4 p-3 rounded text-[11px] font-bold text-center italic">
+                        🏎️ Nemáš vlastní auto? Můžeme ti ho půjčit! <br> 
+                        <span class="uppercase">Kontaktuj nás pro domluvu.</span>
+                    </div>
+
                     <div class="mt-8 flex items-center justify-between p-4 bg-blue-50 rounded-lg border border-blue-100">
                         <div>
-                            <p class="text-xs text-blue-700 font-bold uppercase tracking-widest">Kapacita naplněna</p>
+                            <p class="text-xs text-blue-700 font-bold uppercase tracking-widest">Přihlášeno</p>
                             <p id="pocitadlo" class="text-5xl font-black text-blue-900 leading-none">0</p>
                         </div>
-                        <div class="text-right text-slate-500">
-                            <p class="text-xs uppercase font-bold tracking-widest">Limit</p>
-                            <p class="text-2xl font-bold">20</p>
+                        <div class="text-right text-slate-500 font-bold">
+                            <p class="text-xs uppercase tracking-widest">Kapacita</p>
+                            <p class="text-2xl">20</p>
                         </div>
                     </div>
                 </div>
@@ -91,7 +97,7 @@
                     <div id="tab-info" class="p-4 space-y-4">
                         <div class="space-y-2">
                             <h3 class="font-bold border-l-4 border-blue-600 pl-2 text-slate-800 uppercase text-xs">Program (2. května)</h3>
-                            <ul class="text-sm space-y-1 text-slate-600">
+                            <ul class="text-sm space-y-1 text-slate-600 font-medium">
                                 <li class="flex justify-between"><span>12:00</span> <span class="font-bold">Sraz jezdců</span></li>
                                 <li class="flex justify-between"><span>13:00</span> <span class="font-bold text-blue-700">Start kvalifikace</span></li>
                             </ul>
@@ -117,7 +123,7 @@
                         </div>
                         <div class="text-[11px] space-y-2 text-slate-600">
                             <p class="font-bold text-slate-800 uppercase">Technické pravidla:</p>
-                            <ul class="list-disc list-inside space-y-1">
+                            <ul class="list-disc list-inside space-y-1 font-medium">
                                 <li>Měřítka: 1:10 až 1:18 Off-road</li>
                                 <li>Rychlost: 35 - 65 km/h</li>
                                 <li>Nabíječky vlastní s sebou</li>
@@ -135,7 +141,6 @@
     </footer>
 
     <script>
-        // === FIREBASE KONFIGURACE (TVOJE FUNKČNÍ) ===
         const firebaseConfig = {
             apiKey: "AIzaSyCLApQOE2w3sO-wGSfMWZQgjdZidIMNvHA",
             authDomain: "zru-rc.firebaseapp.com",
@@ -169,13 +174,13 @@
             if (data) {
                 Object.values(data).reverse().forEach(jezdec => {
                     const div = document.createElement('div');
-                    div.className = "p-2 bg-slate-50 border-b font-bold flex justify-between items-center";
+                    div.className = "p-2 bg-slate-50 border-b font-bold flex justify-between items-center rounded mb-1";
                     div.innerHTML = `<span>${jezdec.jmeno}</span><span class="text-green-600 text-[9px] uppercase">OK</span>`;
                     seznam.appendChild(div);
                     pocet++;
                 });
             } else {
-                seznam.innerHTML = '<p class="text-center py-4 text-slate-400 italic text-xs">Žádný jezdec.</p>';
+                seznam.innerHTML = '<p class="text-center py-4 text-slate-400 italic text-xs">Nikdo nepřihlášen.</p>';
             }
             pocitadlo.innerText = pocet;
         });
