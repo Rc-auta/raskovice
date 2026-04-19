@@ -18,6 +18,8 @@
         .warning-box { background-color: #fff1f2; border: 1px solid #fda4af; color: #9f1239; }
         .rent-info { background-color: #f0f9ff; border: 1px solid #bae6fd; color: #0369a1; }
         .critical-box { background-color: #7f1d1d; color: white; border-radius: 4px; padding: 10px; font-weight: bold; text-transform: uppercase; font-size: 10px; }
+        /* Nový styl pro finanční info */
+        .fee-badge { background: #ef4444; color: white; padding: 2px 6px; border-radius: 4px; font-weight: 900; }
     </style>
 </head>
 <body class="min-h-screen">
@@ -56,8 +58,28 @@
             </div>
 
             <div class="lg:col-span-5">
+                <div class="warning-box rounded-lg p-4 mb-6 shadow-sm border-l-4 border-l-red-600">
+                    <h3 class="font-black uppercase text-sm mb-2 flex items-center gap-2">
+                        <span>⚠️</span> PLATEBNÍ INFORMACE
+                    </h3>
+                    <div class="space-y-2 text-[13px] font-bold">
+                        <p class="flex justify-between items-center bg-white/50 p-2 rounded">
+                            <span>STARTUJNÉ (Vlastní auto):</span>
+                            <span class="text-lg">20 Kč</span>
+                        </p>
+                        <p class="flex justify-between items-center bg-white/50 p-2 rounded">
+                            <span>PŮJČENÍ AUTA:</span>
+                            <span class="text-lg">50 Kč</span>
+                        </p>
+                        <p class="text-[10px] uppercase text-red-700 mt-2 leading-tight italic">
+                            * Peníze putujou na transparentní účet pro celkové zlepšení ZRU (trať, vybavení, zázemí).
+                        </p>
+                    </div>
+                </div>
+
                 <div class="content-box rounded-lg p-6">
-                    <h2 class="text-2xl font-bold text-slate-800 mb-6 border-b pb-2">Registrace (MAX 10)</h2>
+                    <h2 class="text-2xl font-bold text-slate-800 mb-2 border-b pb-2 italic uppercase">Registrace</h2>
+                    <p class="text-[10px] font-bold text-red-600 uppercase mb-6 tracking-widest">! DONES SI SVOJE AUTO !</p>
                     
                     <div class="space-y-4">
                         <div>
@@ -68,11 +90,6 @@
                         <button type="button" id="btn-odeslat" onclick="odeslatDoDatabaze()" class="btn-primary w-full text-white font-bold py-4 rounded shadow-lg uppercase tracking-wider">
                             Odeslat přihlášku
                         </button>
-                    </div>
-
-                    <div class="rent-info mt-4 p-3 rounded text-[11px] font-bold text-center italic">
-                        🏎️ Nemáš vlastní auto? Můžeme ti ho půjčit! <br> 
-                        <span class="uppercase">Kontaktuj nás pro domluvu.</span>
                     </div>
 
                     <div class="mt-8 flex items-center justify-between p-4 bg-blue-50 rounded-lg border border-blue-100">
@@ -91,42 +108,35 @@
             <div class="lg:col-span-4">
                 <div class="content-box rounded-lg overflow-hidden">
                     <div class="flex border-b border-slate-200">
-                        <button onclick="switchTab('info')" id="btn-info" class="tab-btn active flex-1 py-3 text-sm uppercase">Info</button>
-                        <button onclick="switchTab('rules')" id="btn-rules" class="tab-btn flex-1 py-3 text-sm uppercase text-slate-500">Důležitá Pravidla</button>
+                        <button onclick="switchTab('info')" id="btn-info" class="tab-btn active flex-1 py-3 text-sm uppercase text-[10px]">Info o akci</button>
+                        <button onclick="switchTab('rules')" id="btn-rules" class="tab-btn flex-1 py-3 text-sm uppercase text-slate-500 text-[10px]">Pravidla</button>
                     </div>
 
                     <div id="tab-info" class="p-4 space-y-4">
                         <div class="space-y-2">
-                            <h3 class="font-bold border-l-4 border-blue-600 pl-2 text-slate-800 uppercase text-xs">Program (2. května)</h3>
-                            <ul class="text-sm space-y-1 text-slate-600 font-medium">
-                                <li class="flex justify-between"><span>12:00</span> <span class="font-bold">Sraz jezdců</span></li>
-                                <li class="flex justify-between"><span>13:00</span> <span class="font-bold text-blue-700">Start kvalifikace</span></li>
+                            <h3 class="font-bold border-l-4 border-blue-600 pl-2 text-slate-800 uppercase text-xs text-blue-700">Program závodu</h3>
+                            <ul class="text-sm space-y-1 text-slate-600 font-medium italic">
+                                <li class="flex justify-between"><span>12:00</span> <span class="font-bold">Příprava a depo</span></li>
+                                <li class="flex justify-between"><span>13:00</span> <span class="font-bold text-blue-700">Start kvalifikací</span></li>
                             </ul>
                         </div>
-                        <div class="space-y-2 pt-2 border-t">
-                            <h3 class="font-bold border-l-4 border-slate-400 pl-2 text-slate-800 uppercase text-xs">Pořadatelé</h3>
-                            <div class="text-xs space-y-1">
-                                <p class="flex justify-between italic"><span>Štěpán Ševčík</span> <a href="tel:776814611" class="text-blue-700 font-bold underline">776 814 611</a></p>
-                                <p class="flex justify-between italic"><span>Vojtěch Bialek</span> <span class="text-slate-500 font-bold">ZRU Management</span></p>
-                            </div>
+                        <div class="rent-info p-3 rounded text-[11px] font-bold text-center">
+                            🏎️ Pokud nemáš auto, ozvi se včas! <br>
+                            Půjčení na místě stojí 50 Kč.
                         </div>
                     </div>
 
                     <div id="tab-rules" class="hidden p-4 space-y-4">
                         <div class="critical-box">
-                            🛑 ZÁKAZ ODCHÁZENÍ ZE ZÁVODU! <br>
-                            Kdo odejde před koncem, dostává stopku na další závody.
+                            🛑 ZÁKAZ ODCHÁZENÍ! <br>
+                            Závod končí až po vyhlášení. Předčasný odchod = BAN.
                         </div>
-                        <div class="warning-box p-3 rounded text-[11px] font-bold leading-tight">
-                            ⚠️ NEDEMOLOVAT TRAŤ: Jakýkoliv úmyslný náraz do tratě nebo ničení značení znamená diskvalifikaci!
-                        </div>
-                        <div class="text-[11px] space-y-2 text-slate-600">
-                            <p class="font-bold text-slate-800 uppercase">Provozní řád:</p>
-                            <ul class="list-disc list-inside space-y-1 font-medium">
-                                <li>Max. 10 jezdců v systému.</li>
-                                <li>Respektuj soupeře i trať.</li>
-                                <li>Nabíječky vlastní s sebou.</li>
-                                <li>Urážky = Okamžitý BAN.</li>
+                        <div class="text-[11px] space-y-2 text-slate-600 font-bold">
+                            <p class="text-red-700 uppercase">Zákaz ničení tratě!</p>
+                            <ul class="list-disc list-inside space-y-1">
+                                <li>Max. 10 jezdců.</li>
+                                <li>Respektuj techniku ZRU.</li>
+                                <li>Urážky se netolerují.</li>
                             </ul>
                         </div>
                     </div>
@@ -137,10 +147,11 @@
     </main>
 
     <footer class="mt-12 border-t border-slate-200 py-6 text-center text-slate-400 text-[10px] uppercase tracking-widest">
-        ZRU Management System v2.1 | Raškovice
+        ZRU Management System v2.2 | Raškovice
     </footer>
 
     <script>
+        // ... Zbytek tvého Firebase skriptu (apiKey, odeslatDoDatabaze, atd.) zůstává stejný ...
         const firebaseConfig = {
             apiKey: "AIzaSyCLApQOE2w3sO-wGSfMWZQgjdZidIMNvHA",
             authDomain: "zru-rc.firebaseapp.com",
@@ -158,12 +169,8 @@
         function odeslatDoDatabaze() {
             const input = document.getElementById('input-jmeno');
             const jmeno = input.value.trim();
-            
             if (jmeno === "") return alert("Musíš zadat jméno!");
-            
-            if (aktualniPocet >= 10) {
-                return alert("STOP! Kapacita 10 jezdců je již plná. Zkus to příště.");
-            }
+            if (aktualniPocet >= 10) return alert("Kapacita plná!");
 
             database.ref('jezdci').push({
                 jmeno: jmeno,
@@ -185,23 +192,22 @@
                 Object.values(data).reverse().forEach(jezdec => {
                     const div = document.createElement('div');
                     div.className = "p-2 bg-slate-50 border-b font-bold flex justify-between items-center rounded mb-1";
-                    div.innerHTML = `<span>${jezdec.jmeno.toUpperCase()}</span><span class="text-green-600 text-[9px] uppercase">PŘIJAT</span>`;
+                    div.innerHTML = `<span>${jezdec.jmeno.toUpperCase()}</span><span class="text-green-600 text-[9px] uppercase">OK</span>`;
                     seznam.appendChild(div);
                     aktualniPocet++;
                 });
             } else {
-                seznam.innerHTML = '<p class="text-center py-4 text-slate-400 italic text-xs">Nikdo nepřihlášen.</p>';
+                seznam.innerHTML = '<p class="text-center py-4 text-slate-400 italic text-xs">Čekání na první jezdce...</p>';
             }
             pocitadlo.innerText = aktualniPocet;
 
-            // Vizuální zámek tlačítka
             const btn = document.getElementById('btn-odeslat');
             if (aktualniPocet >= 10) {
                 btn.innerText = "KAPACITA PLNÁ";
-                btn.style.backgroundColor = "#64748b";
+                btn.className = "w-full bg-slate-400 text-white font-bold py-4 rounded uppercase tracking-wider cursor-not-allowed";
             } else {
                 btn.innerText = "ODESLAT PŘIHLÁŠKU";
-                btn.style.backgroundColor = "#1e40af";
+                btn.className = "btn-primary w-full text-white font-bold py-4 rounded shadow-lg uppercase tracking-wider";
             }
         });
 
