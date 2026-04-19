@@ -17,6 +17,7 @@
         .btn-primary:hover { background-color: #1d4ed8; }
         .warning-box { background-color: #fff1f2; border: 1px solid #fda4af; color: #9f1239; }
         .rent-info { background-color: #f0f9ff; border: 1px solid #bae6fd; color: #0369a1; }
+        .critical-box { background-color: #7f1d1d; color: white; border-radius: 4px; padding: 10px; font-weight: bold; text-transform: uppercase; font-size: 10px; }
     </style>
 </head>
 <body class="min-h-screen">
@@ -56,15 +57,15 @@
 
             <div class="lg:col-span-5">
                 <div class="content-box rounded-lg p-6">
-                    <h2 class="text-2xl font-bold text-slate-800 mb-6 border-b pb-2">Registrace na 2. 5.</h2>
+                    <h2 class="text-2xl font-bold text-slate-800 mb-6 border-b pb-2">Registrace (MAX 10)</h2>
                     
                     <div class="space-y-4">
                         <div>
                             <label class="block text-sm font-bold text-slate-700 mb-1">Jméno a Příjmení jezdce</label>
                             <input type="text" id="input-jmeno" placeholder="Zadejte celé jméno..." 
-                                class="w-full border border-slate-300 rounded px-4 py-3 focus:ring-2 focus:ring-blue-500 outline-none font-bold">
+                                class="w-full border border-slate-300 rounded px-4 py-3 focus:ring-2 focus:ring-blue-500 outline-none font-bold uppercase">
                         </div>
-                        <button type="button" onclick="odeslatDoDatabaze()" class="btn-primary w-full text-white font-bold py-4 rounded shadow-lg uppercase tracking-wider">
+                        <button type="button" id="btn-odeslat" onclick="odeslatDoDatabaze()" class="btn-primary w-full text-white font-bold py-4 rounded shadow-lg uppercase tracking-wider">
                             Odeslat přihlášku
                         </button>
                     </div>
@@ -76,12 +77,12 @@
 
                     <div class="mt-8 flex items-center justify-between p-4 bg-blue-50 rounded-lg border border-blue-100">
                         <div>
-                            <p class="text-xs text-blue-700 font-bold uppercase tracking-widest">Přihlášeno</p>
+                            <p class="text-xs text-blue-700 font-bold uppercase tracking-widest">V seznamu</p>
                             <p id="pocitadlo" class="text-5xl font-black text-blue-900 leading-none">0</p>
                         </div>
                         <div class="text-right text-slate-500 font-bold">
                             <p class="text-xs uppercase tracking-widest">Kapacita</p>
-                            <p class="text-2xl">20</p>
+                            <p class="text-2xl">10</p>
                         </div>
                     </div>
                 </div>
@@ -91,7 +92,7 @@
                 <div class="content-box rounded-lg overflow-hidden">
                     <div class="flex border-b border-slate-200">
                         <button onclick="switchTab('info')" id="btn-info" class="tab-btn active flex-1 py-3 text-sm uppercase">Info</button>
-                        <button onclick="switchTab('rules')" id="btn-rules" class="tab-btn flex-1 py-3 text-sm uppercase text-slate-500">Pravidla</button>
+                        <button onclick="switchTab('rules')" id="btn-rules" class="tab-btn flex-1 py-3 text-sm uppercase text-slate-500">Důležitá Pravidla</button>
                     </div>
 
                     <div id="tab-info" class="p-4 space-y-4">
@@ -109,24 +110,23 @@
                                 <p class="flex justify-between italic"><span>Vojtěch Bialek</span> <span class="text-slate-500 font-bold">ZRU Management</span></p>
                             </div>
                         </div>
-                        <div class="pt-2">
-                            <a href="https://chat.whatsapp.com/FrQ1fDaMPhp5CWLg64VhHQ" target="_blank" 
-                               class="block text-center bg-green-700 text-white py-2 rounded text-xs font-bold hover:bg-green-800 transition shadow-sm uppercase tracking-wider">
-                                WhatsApp Skupina
-                            </a>
-                        </div>
                     </div>
 
                     <div id="tab-rules" class="hidden p-4 space-y-4">
+                        <div class="critical-box">
+                            🛑 ZÁKAZ ODCHÁZENÍ ZE ZÁVODU! <br>
+                            Kdo odejde před koncem, dostává stopku na další závody.
+                        </div>
                         <div class="warning-box p-3 rounded text-[11px] font-bold leading-tight">
-                            ⚠️ VAROVÁNÍ: Nadávky, pomlouvání nebo urážky na skupině budou přísně trestány zákazem startu!
+                            ⚠️ NEDEMOLOVAT TRAŤ: Jakýkoliv úmyslný náraz do tratě nebo ničení značení znamená diskvalifikaci!
                         </div>
                         <div class="text-[11px] space-y-2 text-slate-600">
-                            <p class="font-bold text-slate-800 uppercase">Technické pravidla:</p>
+                            <p class="font-bold text-slate-800 uppercase">Provozní řád:</p>
                             <ul class="list-disc list-inside space-y-1 font-medium">
-                                <li>Měřítka: 1:10 až 1:18 Off-road</li>
-                                <li>Rychlost: 35 - 65 km/h</li>
-                                <li>Nabíječky vlastní s sebou</li>
+                                <li>Max. 10 jezdců v systému.</li>
+                                <li>Respektuj soupeře i trať.</li>
+                                <li>Nabíječky vlastní s sebou.</li>
+                                <li>Urážky = Okamžitý BAN.</li>
                             </ul>
                         </div>
                     </div>
@@ -153,16 +153,25 @@
 
         firebase.initializeApp(firebaseConfig);
         const database = firebase.database();
+        let aktualniPocet = 0;
 
         function odeslatDoDatabaze() {
             const input = document.getElementById('input-jmeno');
             const jmeno = input.value.trim();
-            if (jmeno === "") return alert("Zadej jméno!");
+            
+            if (jmeno === "") return alert("Musíš zadat jméno!");
+            
+            if (aktualniPocet >= 10) {
+                return alert("STOP! Kapacita 10 jezdců je již plná. Zkus to příště.");
+            }
 
             database.ref('jezdci').push({
                 jmeno: jmeno,
                 cas: Date.now()
-            }).then(() => { input.value = ""; });
+            }).then(() => { 
+                input.value = ""; 
+                alert("Byl jsi úspěšně přihlášen!");
+            });
         }
 
         database.ref('jezdci').on('value', (snapshot) => {
@@ -170,19 +179,30 @@
             const seznam = document.getElementById('seznam-jezdcu');
             const pocitadlo = document.getElementById('pocitadlo');
             seznam.innerHTML = "";
-            let pocet = 0;
+            aktualniPocet = 0;
+            
             if (data) {
                 Object.values(data).reverse().forEach(jezdec => {
                     const div = document.createElement('div');
                     div.className = "p-2 bg-slate-50 border-b font-bold flex justify-between items-center rounded mb-1";
-                    div.innerHTML = `<span>${jezdec.jmeno}</span><span class="text-green-600 text-[9px] uppercase">OK</span>`;
+                    div.innerHTML = `<span>${jezdec.jmeno.toUpperCase()}</span><span class="text-green-600 text-[9px] uppercase">PŘIJAT</span>`;
                     seznam.appendChild(div);
-                    pocet++;
+                    aktualniPocet++;
                 });
             } else {
                 seznam.innerHTML = '<p class="text-center py-4 text-slate-400 italic text-xs">Nikdo nepřihlášen.</p>';
             }
-            pocitadlo.innerText = pocet;
+            pocitadlo.innerText = aktualniPocet;
+
+            // Vizuální zámek tlačítka
+            const btn = document.getElementById('btn-odeslat');
+            if (aktualniPocet >= 10) {
+                btn.innerText = "KAPACITA PLNÁ";
+                btn.style.backgroundColor = "#64748b";
+            } else {
+                btn.innerText = "ODESLAT PŘIHLÁŠKU";
+                btn.style.backgroundColor = "#1e40af";
+            }
         });
 
         function switchTab(tab) {
