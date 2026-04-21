@@ -22,18 +22,14 @@
 
     <div id="modal-potvrzeni">
         <div class="bg-white rounded-xl max-w-md w-full p-6 shadow-2xl border-t-8 border-blue-600">
-            <h2 class="text-2xl font-black italic uppercase mb-4 text-slate-800">Kontrola před startem!</h2>
+            <h2 class="text-2xl font-black italic uppercase mb-4 text-slate-800">Skoro hotovo!</h2>
             <div class="space-y-4 text-slate-700">
                 <p class="font-bold text-lg">Máš zařízené auto?</p>
-                <p class="text-sm">Pokud ne, domluv se se Štěpánem na půjčení (50 Kč).</p>
-                <div class="bg-red-50 p-3 border-l-4 border-red-600 rounded">
-                    <p class="text-xs font-bold text-red-700 uppercase mb-1">⚠️ Pozor na slot:</p>
-                    <p class="text-xs italic leading-tight">V autě musíš mít volný kanál v přijímači pro IR čip, jinak ti nebudeme moct měřit kola!</p>
-                </div>
+                <p class="text-sm">Pokud ne, domluv se se Štěpánem na půjčení (příplatek 50 Kč).</p>
             </div>
-            <div class="mt-6 flex gap-3">
-                <button onclick="zavritModal()" class="flex-1 py-3 bg-slate-200 rounded font-bold uppercase text-[10px] text-slate-600">Zpět</button>
-                <button onclick="finalniOdeslani()" class="flex-2 px-8 py-3 bg-blue-600 text-white rounded font-bold uppercase text-[10px] shadow-lg">Mám vše, zapsat!</button>
+            <div class="mt-8 flex gap-3">
+                <button onclick="zavritModal()" class="flex-1 py-3 bg-slate-100 rounded font-bold uppercase text-[10px] text-slate-500">Zpět</button>
+                <button onclick="finalniOdeslani()" class="flex-2 px-8 py-3 bg-blue-600 text-white rounded font-bold uppercase text-[10px] shadow-lg">Ano, zapsat mě!</button>
             </div>
         </div>
     </div>
@@ -79,7 +75,7 @@
             <div class="lg:col-span-5">
                 <div class="content-box rounded-lg p-6 border-t-4 border-t-blue-600 shadow-xl">
                     <h2 class="text-3xl font-black text-slate-800 mb-2 italic uppercase">Registrace</h2>
-                    <p class="text-[10px] font-bold text-blue-600 uppercase mb-8 tracking-widest border-b pb-2 italic">Závod začíná brzy, tak se zapiš!</p>
+                    <p class="text-[10px] font-bold text-blue-600 uppercase mb-8 tracking-widest border-b pb-2 italic italic">Napiš své jméno a jdi na start!</p>
                     
                     <div class="space-y-5">
                         <div>
@@ -93,12 +89,12 @@
                     </div>
 
                     <div class="mt-8 flex gap-4">
-                        <div class="flex-1 bg-slate-800 text-white p-4 rounded-lg flex flex-col items-center shadow-md">
-                            <span class="text-[9px] font-black uppercase text-slate-400 mb-1 tracking-widest">Startovné</span>
+                        <div class="flex-1 bg-slate-800 text-white p-4 rounded-lg flex flex-col items-center">
+                            <span class="text-[9px] font-black uppercase text-slate-400 mb-1">Startovné</span>
                             <span class="font-black text-xl italic">20 Kč</span>
                         </div>
                         <div class="flex-1 bg-slate-100 p-4 rounded-lg flex flex-col items-center border border-slate-200">
-                            <span class="text-[9px] font-black uppercase text-slate-400 mb-1 tracking-widest">Kapacita</span>
+                            <span class="text-[9px] font-black uppercase text-slate-400 mb-1">Kapacita</span>
                             <span id="pocitadlo-box" class="font-black text-xl italic text-blue-800">0/10</span>
                         </div>
                     </div>
@@ -107,21 +103,12 @@
 
             <div class="lg:col-span-4 space-y-4">
                 <div class="side-box shadow-sm bg-white border border-slate-200">
-                    <h2 class="font-black text-[11px] uppercase text-blue-900 mb-4 tracking-widest border-b pb-2 italic italic">Harmonogram dne</h2>
+                    <h2 class="font-black text-[11px] uppercase text-blue-900 mb-4 tracking-widest border-b pb-2 italic">Pravidla závodu</h2>
                     <div class="space-y-2 text-[10px] font-bold leading-tight uppercase">
                         <p class="flex items-start gap-2"><span class="text-blue-600">12:00</span> <span>Sraz a trénování</span></p>
                         <p class="flex items-start gap-2"><span class="text-blue-600">13:00</span> <span>1. Kvalifikační kolo</span></p>
-                        <p class="p-1 bg-slate-50 border-l-2 border-slate-300 pl-2">Kvalifikace trvá 3 minuty</p>
-                        <p class="p-1 bg-red-50 border-l-2 border-red-600 text-red-700 pl-2">Po dojetí: Ihned odevzdat čip!</p>
-                        <p class="p-1 bg-blue-50 border-l-2 border-blue-600 pl-2 italic">Finále: Max 5 účastníků ve skupině</p>
-                    </div>
-                </div>
-                
-                <div class="side-box shadow-sm bg-slate-50 border-dashed border-slate-300">
-                    <h2 class="font-black text-[10px] uppercase text-slate-400 mb-3 tracking-widest italic font-black">Technické info</h2>
-                    <div class="text-[10px] font-bold space-y-1 uppercase text-slate-600">
-                        <p>Měřítko: 1:10 / 1:12</p>
-                        <p>Slot v přijímači: <span class="text-red-600">NUTNÝ</span></p>
+                        <p class="p-1 bg-red-50 border-l-2 border-red-600 text-red-700 pl-2">Po dojetí: Odevzdat čip!</p>
+                        <p class="p-1 bg-blue-50 border-l-2 border-blue-600 pl-2 italic">Finále: Max 5 jezdců ve skupině</p>
                     </div>
                 </div>
             </div>
@@ -146,14 +133,12 @@
 
         firebase.initializeApp(firebaseConfig);
         const database = firebase.database();
-        
-        // Změna složky na novou (pro vyčištění starého seznamu)
         const dbPath = 'jezdci_zavod_2_kvetna'; 
         let aktualniPocet = 0;
 
         function otevritModal() {
             const jmeno = document.getElementById('input-jmeno').value.trim();
-            if (jmeno === "") return alert("Zadej prosím své jméno!");
+            if (jmeno === "") return alert("Napiš nejdřív jméno!");
             document.getElementById('modal-potvrzeni').style.display = 'flex';
         }
 
@@ -171,7 +156,7 @@
             }).then(() => { 
                 input.value = ""; 
                 zavritModal();
-                alert("Jsi přihlášen! Hodně štěstí v závodě.");
+                alert("Hotovo, seš tam!");
             });
         }
 
@@ -185,13 +170,13 @@
             if (data) {
                 Object.values(data).reverse().forEach(jezdec => {
                     const div = document.createElement('div');
-                    div.className = "p-2 bg-slate-50 border-b font-black flex justify-between items-center rounded mb-1 border-l-4 border-l-blue-900 shadow-sm transition-all";
+                    div.className = "p-2 bg-slate-50 border-b font-black flex justify-between items-center rounded mb-1 border-l-4 border-l-blue-900 shadow-sm";
                     div.innerHTML = `<span class="text-[10px] italic">${jezdec.jmeno.toUpperCase()}</span><span class="text-blue-600 text-[7px] italic">ZRU READY</span>`;
                     seznam.appendChild(div);
                     aktualniPocet++;
                 });
             } else {
-                seznam.innerHTML = '<p class="text-center py-4 text-slate-400 italic text-[10px]">Depo zeje prázdnotou...</p>';
+                seznam.innerHTML = '<p class="text-center py-4 text-slate-400 italic text-[10px]">Depo je zatím prázdné...</p>';
             }
             pocitadloBox.innerText = `${aktualniPocet}/10`;
 
