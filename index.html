@@ -14,22 +14,37 @@
         .btn-primary { background-color: #1e40af; transition: 0.2s; cursor: pointer; }
         .btn-primary:hover { background-color: #1d4ed8; }
         .btn-whatsapp { background-color: #25d366; color: white; font-weight: bold; transition: 0.2s; }
-        .btn-whatsapp:hover { background-color: #128c7e; }
         .side-box { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 15px; }
-        .spec-item { border-bottom: 1px dashed #cbd5e1; padding: 4px 0; display: flex; justify-content: space-between; font-size: 11px; }
-        @keyframes pulse-red { 0%, 100% { opacity: 1; } 50% { opacity: 0.7; } }
-        .animate-pulse-red { animation: pulse-red 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
+        #modal-potvrzeni { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 50; align-items: center; justify-content: center; padding: 20px; }
     </style>
 </head>
 <body class="min-h-screen">
 
+    <div id="modal-potvrzeni">
+        <div class="bg-white rounded-xl max-w-md w-full p-6 shadow-2xl border-t-8 border-blue-600">
+            <h2 class="text-2xl font-black italic uppercase mb-4 text-slate-800">Kontrola před startem!</h2>
+            <div class="space-y-4 text-slate-700">
+                <p class="font-bold text-lg">Máš zařízené auto?</p>
+                <p class="text-sm">Pokud ne, domluv se se Štěpánem na půjčení (50 Kč).</p>
+                <div class="bg-red-50 p-3 border-l-4 border-red-600 rounded">
+                    <p class="text-xs font-bold text-red-700 uppercase mb-1">⚠️ Pozor na slot:</p>
+                    <p class="text-xs italic leading-tight">V autě musíš mít volný kanál v přijímači pro IR čip, jinak ti nebudeme moct měřit kola!</p>
+                </div>
+            </div>
+            <div class="mt-6 flex gap-3">
+                <button onclick="zavritModal()" class="flex-1 py-3 bg-slate-200 rounded font-bold uppercase text-[10px] text-slate-600">Zpět</button>
+                <button onclick="finalniOdeslani()" class="flex-2 px-8 py-3 bg-blue-600 text-white rounded font-bold uppercase text-[10px] shadow-lg">Mám vše, zapsat!</button>
+            </div>
+        </div>
+    </div>
+
     <header class="header-bg text-white py-8 shadow-md">
-        <div class="max-w-7xl mx-auto px-4 text-center lg:text-left flex flex-col lg:flex-row justify-between items-center">
-            <div>
+        <div class="max-w-7xl mx-auto px-4 flex flex-col lg:flex-row justify-between items-center">
+            <div class="text-center lg:text-left">
                 <h1 class="text-4xl font-bold tracking-tight uppercase italic">ZRU RAŠKOVICE</h1>
                 <p class="text-blue-100 mt-1 font-semibold uppercase text-xs tracking-widest">Racing Management System v2.5</p>
             </div>
-            <p class="text-white mt-4 lg:mt-0 font-black uppercase text-sm bg-blue-900 px-4 py-2 rounded">Příští závod: 2. května 2026</p>
+            <p class="text-white mt-4 lg:mt-0 font-black uppercase text-xs bg-blue-900 px-4 py-2 rounded">Příští závod: 2. května 2026</p>
         </div>
     </header>
 
@@ -40,89 +55,73 @@
                 <div class="side-box shadow-sm border-l-4 border-l-blue-600">
                     <h2 class="font-black text-[10px] uppercase text-slate-400 mb-3 tracking-widest">Organizátoři</h2>
                     <div class="space-y-3">
-                        <div class="bg-white p-3 rounded shadow-sm">
-                            <p class="font-bold text-sm text-slate-800">Štěpán Ševčík</p>
+                        <div class="bg-white p-3 rounded shadow-sm border border-slate-100">
+                            <p class="font-bold text-sm">Štěpán Ševčík</p>
                             <p class="text-blue-700 font-black text-xs underline mb-2 italic">776 814 611</p>
-                            <a href="https://wa.me/420776814611" target="_blank" class="btn-whatsapp w-full block text-center py-2 rounded text-[10px] uppercase shadow-sm">
-                                Napsat na WhatsApp
-                            </a>
+                            <a href="https://wa.me/420776814611" target="_blank" class="btn-whatsapp w-full block text-center py-2 rounded text-[10px] uppercase">WhatsApp</a>
                         </div>
-                        <div class="bg-white p-3 rounded shadow-sm opacity-80 border border-slate-100">
-                            <p class="font-bold text-sm text-slate-800">Vojtěch Křenek</p>
-                            <p class="text-[10px] italic text-slate-500 uppercase font-black">ZRU Management</p>
+                        <div class="bg-white p-3 rounded shadow-sm opacity-80">
+                            <p class="font-bold text-sm">Vojtěch Křenek</p>
+                            <p class="text-[10px] italic text-slate-500 uppercase font-bold">ZRU Management</p>
                         </div>
                     </div>
                 </div>
 
-                <div class="content-box rounded-lg overflow-hidden">
+                <div class="content-box rounded-lg overflow-hidden font-bold">
                     <div class="bg-blue-900 text-white px-4 py-2 uppercase text-[10px] flex justify-between items-center">
-                        <span>Přihlášeni</span>
-                        <span class="animate-pulse text-green-400 font-bold">● LIVE</span>
+                        <span>Aktuálně v depu</span>
+                        <span class="animate-pulse text-green-400 font-bold italic">● LIVE</span>
                     </div>
-                    <div id="seznam-jezdcu" class="p-2 space-y-1 text-sm max-h-[300px] overflow-y-auto">
-                        </div>
+                    <div id="seznam-jezdcu" class="p-2 space-y-1 text-sm max-h-[300px] overflow-y-auto"></div>
                 </div>
             </div>
 
             <div class="lg:col-span-5">
-                <div class="bg-red-700 text-white rounded-lg p-4 mb-4 shadow-lg animate-pulse-red">
-                    <h3 class="font-black text-xs uppercase mb-1 flex items-center gap-2">
-                        <span>⚠️</span> KRITICKÁ SPECIFIKACE
-                    </h3>
-                    <p class="text-sm font-bold leading-tight uppercase italic">
-                        Musíš mít v autě volný slot (kanál) v přijímači pro zapojení IR čipu!
-                    </p>
-                </div>
-
-                <div class="content-box rounded-lg p-6 border-t-4 border-t-blue-600">
-                    <h2 class="text-2xl font-black text-slate-800 mb-2 italic uppercase">Registrace</h2>
-                    <p class="text-[10px] font-bold text-blue-600 uppercase mb-6 tracking-widest border-b pb-2">Startovné 20 Kč | Půjčení 50 Kč</p>
+                <div class="content-box rounded-lg p-6 border-t-4 border-t-blue-600 shadow-xl">
+                    <h2 class="text-3xl font-black text-slate-800 mb-2 italic uppercase">Registrace</h2>
+                    <p class="text-[10px] font-bold text-blue-600 uppercase mb-8 tracking-widest border-b pb-2 italic">Závod začíná brzy, tak se zapiš!</p>
                     
                     <div class="space-y-5">
                         <div>
-                            <label class="block text-[10px] font-black text-slate-400 uppercase mb-1">Jméno a Příjmení jezdce</label>
-                            <input type="text" id="input-jmeno" placeholder="NAPŘ. VOJTA BIALEK" 
-                                class="w-full border border-slate-300 rounded px-4 py-3 focus:ring-2 focus:ring-blue-500 outline-none font-bold uppercase text-lg">
+                            <label class="block text-[10px] font-black text-slate-400 uppercase mb-1">Jméno jezdce</label>
+                            <input type="text" id="input-jmeno" placeholder="NAPŘ. DOMINIK N." 
+                                class="w-full border border-slate-300 rounded px-4 py-3 focus:ring-2 focus:ring-blue-500 outline-none font-black uppercase text-lg">
                         </div>
-                        <button onclick="odeslatDoDatabaze()" id="btn-odeslat" class="btn-primary w-full text-white font-bold py-4 rounded shadow-lg uppercase tracking-wider text-sm">
-                            Odeslat přihlášku
+                        <button onclick="otevritModal()" id="btn-odeslat" class="btn-primary w-full text-white font-bold py-5 rounded shadow-lg uppercase tracking-wider text-sm">
+                            Registrovat se
                         </button>
                     </div>
 
-                    <div class="mt-8 p-4 bg-slate-800 text-white rounded-lg flex justify-between items-center">
-                        <div class="flex flex-col">
-                            <span class="text-[9px] font-black uppercase text-slate-400 tracking-widest">Aktuální kapacita</span>
-                            <span id="pocitadlo-box" class="text-4xl font-black italic tracking-tighter">0/10</span>
+                    <div class="mt-8 flex gap-4">
+                        <div class="flex-1 bg-slate-800 text-white p-4 rounded-lg flex flex-col items-center shadow-md">
+                            <span class="text-[9px] font-black uppercase text-slate-400 mb-1 tracking-widest">Startovné</span>
+                            <span class="font-black text-xl italic">20 Kč</span>
                         </div>
-                        <div class="text-right">
-                            <span class="text-[9px] font-black uppercase text-blue-400 tracking-widest">Stav depa</span>
-                            <span class="block text-xs font-bold text-green-400 uppercase">Otevřeno</span>
+                        <div class="flex-1 bg-slate-100 p-4 rounded-lg flex flex-col items-center border border-slate-200">
+                            <span class="text-[9px] font-black uppercase text-slate-400 mb-1 tracking-widest">Kapacita</span>
+                            <span id="pocitadlo-box" class="font-black text-xl italic text-blue-800">0/10</span>
                         </div>
                     </div>
                 </div>
             </div>
 
             <div class="lg:col-span-4 space-y-4">
-                <div class="side-box shadow-sm bg-white">
-                    <h2 class="font-black text-[11px] uppercase text-blue-900 mb-4 tracking-widest border-b pb-2 italic">Jak to funguje?</h2>
-                    <div class="space-y-2 text-[10px] font-bold leading-tight">
-                        <p class="flex items-start gap-2"><span class="text-blue-600">12:00</span> <span>Sraz a začátek trénování.</span></p>
-                        <p class="flex items-start gap-2"><span class="text-blue-600">13:00</span> <span>Start 1. kvalifikačního kola.</span></p>
-                        <p class="p-1 bg-slate-100 rounded">Rozdělení do skupin od nejnižší (podle abecedy).</p>
-                        <p class="p-1 bg-slate-100 rounded">Kvalifikace trvá přesně 3 minuty.</p>
-                        <p class="text-red-700 italic border-l-2 border-red-600 pl-2">Hned po dojetí odevzdej čip organizátorům!</p>
-                        <p class="border-l-2 border-slate-300 pl-2">Po odevzdání čipu hned nabíjet baterky.</p>
-                        <p class="text-blue-900 font-black">Půl minuty před koncem se chystá další skupina.</p>
-                        <p class="p-1 bg-blue-50 text-blue-900 border border-blue-100 rounded italic">Po 2 jízdách pauza + finálové skupiny (max 5 jezdců).</p>
+                <div class="side-box shadow-sm bg-white border border-slate-200">
+                    <h2 class="font-black text-[11px] uppercase text-blue-900 mb-4 tracking-widest border-b pb-2 italic italic">Harmonogram dne</h2>
+                    <div class="space-y-2 text-[10px] font-bold leading-tight uppercase">
+                        <p class="flex items-start gap-2"><span class="text-blue-600">12:00</span> <span>Sraz a trénování</span></p>
+                        <p class="flex items-start gap-2"><span class="text-blue-600">13:00</span> <span>1. Kvalifikační kolo</span></p>
+                        <p class="p-1 bg-slate-50 border-l-2 border-slate-300 pl-2">Kvalifikace trvá 3 minuty</p>
+                        <p class="p-1 bg-red-50 border-l-2 border-red-600 text-red-700 pl-2">Po dojetí: Ihned odevzdat čip!</p>
+                        <p class="p-1 bg-blue-50 border-l-2 border-blue-600 pl-2 italic">Finále: Max 5 účastníků ve skupině</p>
                     </div>
                 </div>
-
+                
                 <div class="side-box shadow-sm bg-slate-50 border-dashed border-slate-300">
-                    <h2 class="font-black text-[10px] uppercase text-slate-500 mb-3 tracking-widest italic">Specifikace pro auto</h2>
-                    <div class="space-y-1">
-                        <div class="spec-item"><span class="font-bold uppercase">Měřítko:</span> <span>1:10 / 1:12</span></div>
-                        <div class="spec-item"><span class="font-bold uppercase">Konektor:</span> <span>JR (Standard)</span></div>
-                        <div class="spec-item text-red-600 font-black uppercase"><span class="italic">Volný slot:</span> <span>ANO!</span></div>
+                    <h2 class="font-black text-[10px] uppercase text-slate-400 mb-3 tracking-widest italic font-black">Technické info</h2>
+                    <div class="text-[10px] font-bold space-y-1 uppercase text-slate-600">
+                        <p>Měřítko: 1:10 / 1:12</p>
+                        <p>Slot v přijímači: <span class="text-red-600">NUTNÝ</span></p>
                     </div>
                 </div>
             </div>
@@ -130,12 +129,11 @@
         </div>
     </main>
 
-    <footer class="mt-8 border-t border-slate-200 py-6 text-center text-slate-400 text-[10px] uppercase tracking-widest font-black">
-        ZRU Management System v2.5 | Štěpán Ševčík & Vojtěch Křenek | Raškovice 2026
+    <footer class="mt-8 border-t border-slate-200 py-6 text-center text-slate-400 text-[9px] uppercase tracking-widest font-black">
+        ZRU Management System v2.5 | Raškovice 2026
     </footer>
 
     <script>
-        // FIREBASE KONFIGURACE (NEZMĚNĚNA)
         const firebaseConfig = {
             apiKey: "AIzaSyCLApQOE2w3sO-wGSfMWZQgjdZidIMNvHA",
             authDomain: "zru-rc.firebaseapp.com",
@@ -148,24 +146,36 @@
 
         firebase.initializeApp(firebaseConfig);
         const database = firebase.database();
+        
+        // Změna složky na novou (pro vyčištění starého seznamu)
+        const dbPath = 'jezdci_zavod_2_kvetna'; 
         let aktualniPocet = 0;
 
-        function odeslatDoDatabaze() {
+        function otevritModal() {
+            const jmeno = document.getElementById('input-jmeno').value.trim();
+            if (jmeno === "") return alert("Zadej prosím své jméno!");
+            document.getElementById('modal-potvrzeni').style.display = 'flex';
+        }
+
+        function zavritModal() {
+            document.getElementById('modal-potvrzeni').style.display = 'none';
+        }
+
+        function finalniOdeslani() {
             const input = document.getElementById('input-jmeno');
             const jmeno = input.value.trim();
-            if (jmeno === "") return alert("Musíš zadat své jméno!");
-            if (aktualniPocet >= 10) return alert("Kapacita plná (10/10)!");
-
-            database.ref('jezdci').push({
+            
+            database.ref(dbPath).push({
                 jmeno: jmeno,
                 cas: Date.now()
             }).then(() => { 
                 input.value = ""; 
-                alert("Úspěšně přihlášen! Vidíme se v depu.");
+                zavritModal();
+                alert("Jsi přihlášen! Hodně štěstí v závodě.");
             });
         }
 
-        database.ref('jezdci').on('value', (snapshot) => {
+        database.ref(dbPath).on('value', (snapshot) => {
             const data = snapshot.val();
             const seznam = document.getElementById('seznam-jezdcu');
             const pocitadloBox = document.getElementById('pocitadlo-box');
@@ -175,24 +185,24 @@
             if (data) {
                 Object.values(data).reverse().forEach(jezdec => {
                     const div = document.createElement('div');
-                    div.className = "p-2 bg-slate-50 border-b font-black flex justify-between items-center rounded mb-1 border-l-4 border-l-blue-800 shadow-sm";
-                    div.innerHTML = `<span class="text-[10px]">${jezdec.jmeno.toUpperCase()}</span><span class="text-green-600 text-[8px] uppercase">START READY</span>`;
+                    div.className = "p-2 bg-slate-50 border-b font-black flex justify-between items-center rounded mb-1 border-l-4 border-l-blue-900 shadow-sm transition-all";
+                    div.innerHTML = `<span class="text-[10px] italic">${jezdec.jmeno.toUpperCase()}</span><span class="text-blue-600 text-[7px] italic">ZRU READY</span>`;
                     seznam.appendChild(div);
                     aktualniPocet++;
                 });
             } else {
-                seznam.innerHTML = '<p class="text-center py-4 text-slate-400 italic text-[10px]">Čekání na první jezdce...</p>';
+                seznam.innerHTML = '<p class="text-center py-4 text-slate-400 italic text-[10px]">Depo zeje prázdnotou...</p>';
             }
             pocitadloBox.innerText = `${aktualniPocet}/10`;
 
             const btn = document.getElementById('btn-odeslat');
             if (aktualniPocet >= 10) {
                 btn.innerText = "KAPACITA PLNÁ";
-                btn.className = "w-full bg-slate-500 text-white font-bold py-4 rounded cursor-not-allowed opacity-50 uppercase tracking-wider text-sm";
+                btn.style.backgroundColor = "#64748b";
                 btn.disabled = true;
             } else {
-                btn.innerText = "ODESLAT PŘIHLÁŠKU";
-                btn.className = "btn-primary w-full text-white font-bold py-4 rounded shadow-lg uppercase tracking-wider text-sm";
+                btn.innerText = "REGISTROVAT SE";
+                btn.style.backgroundColor = "#1e40af";
                 btn.disabled = false;
             }
         });
